@@ -9,16 +9,6 @@ if (!process.env.DATABASE_URI) {
   throw new Error('DATABASE_URI not set');
 }
 
-const ENV = process.env.NODE_ENV || "development"
-
-require("dotenv").config({
-    path: `${__dirname}/../.env.${ENV}`
-})
-
-if (!process.env.DATABASE_NAME) {
-  throw new Error('DATABASE_NAME not set');
-}
-
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
   serverApi: {

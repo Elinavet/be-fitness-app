@@ -10,7 +10,7 @@ module.exports = [
     weight: 60,
     xp: 1200,
     goals: ["Lose weight", "Run a marathon"],
-    reminder: [
+    reminders: [
       {
         user_id: new ObjectId("673b26e3656d6301098761d0"),
         workout_id: new ObjectId("673b26e3656d6301098761e0"),
@@ -27,7 +27,7 @@ module.exports = [
     weight: 85,
     xp: 900,
     goals: ["Build muscle", "Improve flexibility"],
-    reminder: [
+    reminders: [
       {
         user_id: new ObjectId("673b26e3656d6301098761d1"),
         workout_id: new ObjectId("673b26e3656d6301098761e1"),
@@ -44,7 +44,7 @@ module.exports = [
     weight: 70,
     xp: 600,
     goals: ["Increase stamina", "Learn yoga"],
-    reminder: [
+    reminders: [
       {
         user_id: new ObjectId("673b26e3656d6301098761d2"),
         workout_id: new ObjectId("673b26e3656d6301098761e2"),
@@ -61,7 +61,7 @@ module.exports = [
     weight: 68,
     xp: 1500,
     goals: ["Maintain weight", "Improve endurance"],
-    reminder: []
+    reminders: []
   },
   {
     _id: new ObjectId("673b26e3656d6301098761d4"),
@@ -72,7 +72,7 @@ module.exports = [
     weight: 77,
     xp: 700,
     goals: ["Run a half marathon", "Eat healthier"],
-    reminder: [
+    reminders: [
       {
         user_id: new ObjectId("673b26e3656d6301098761d4"),
         workout_id: new ObjectId("673b26e3656d6301098761e3"),
