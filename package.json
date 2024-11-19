@@ -5,7 +5,9 @@
   "main": "connection.js",
   "scripts": {
     "test": "jest",
-    "seed-dev": "node database/run-seed.js",
+    "seed": "node database/run-seed.js",
+    "start": "node listen.js",
+    "seed-prod": "NODE_ENV=production npm run seed",
     "prepare": "husky"
   },
   "keywords": [],
