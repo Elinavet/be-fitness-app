@@ -89,14 +89,40 @@ describe("/api/users/:user_id", () => {
         })
     })
     describe("PATCH", () => {
-        test("200: Increments XP when given a valid xp property", () => {
+        test("200: Adds a goal to the goal array when given a valid goal property", () => {
             return request(app)
             .patch("/api/users/673b26e3656d6301098761d1")
-            .send({xp_increment: 100})
+            .send({goal: "Goal 3"})
             .expect(200)
             .then((response) => {
-                expect(response.body.user._id).toBe("673b26e3656d6301098761d1")
-                expect(response.body.user.xp).toBe(1000)
+                expect(response.body.user.goals).toEqual(expect.arrayContaining(["Goal 3"]))
+            })
+        })
+        test("200: Ignores any extra keys on object being sent", () => {
+            return request(app)
+            .patch("/api/users/673b26e3656d6301098761d1")
+            .send({goal: "Goal 3", extraKey: "Extra value"})
+            .expect(200)
+            .then((response) => {
+                expect(response.body.user.goals).toEqual(expect.arrayContaining(["Goal 3"]))
+            })
+        })
+        test("400: Responds with a bad request message when given an invalid ID", () => {
+            return request(app)
+            .patch("/api/users/invalid_id")
+            .send({goal: "Goal 3"})
+            .expect(400)
+            .then((response) => {
+                expect(response.body.message).toBe("Invalid ID")
+            })
+        })
+        test("404: Responds with a not found message when user does not exist", () => {
+            return request(app)
+            .patch("/api/users/673b26e3656d6301098761d5")
+            .send({goal: "Goal 3"})
+            .expect(404)
+            .then((response) => {
+                expect(response.body.message).toBe("User not found")
             })
         })
     })

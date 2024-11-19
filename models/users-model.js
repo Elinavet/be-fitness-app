@@ -24,7 +24,13 @@ function fetchUserById(userId){
 
 function updateUser(userId, propertiesToUpdate){
     return client.connect().then(() => {
-        return usersDb.findOneAndUpdate({_id: new ObjectId(userId)}, {$inc: {xp: propertiesToUpdate.xp_increment}}, {returnDocument: "after"})
+        return usersDb.findOne({_id: new ObjectId(userId)})
+    }).then((user) => {
+        if(!user){
+            return Promise.reject({status: 404, message: "User not found"})
+        }
+        user.goals.push(propertiesToUpdate.goal)
+        return usersDb.findOneAndUpdate({_id: new ObjectId(userId)}, {$set: {goals: user.goals}}, {returnDocument: "after"})
     }).then((user) => {
         return user
     })
