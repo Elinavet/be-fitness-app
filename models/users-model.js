@@ -14,6 +14,9 @@ function fetchUserById(Id){
     return client.connect().then(() => {
         return db.collection("users").findOne({_id: new ObjectId(Id)})
     }).then((user) => {
+        if(!user){
+            return Promise.reject({status: 404, message: "User not found"})
+        }
         return user
     })
 }
