@@ -26,7 +26,6 @@ function updateUser(userId, propertiesToUpdate){
     return client.connect().then(() => {
         return usersDb.findOneAndUpdate({_id: new ObjectId(userId)}, {$inc: {xp: propertiesToUpdate.xp_increment}}, {returnDocument: "after"})
     }).then((user) => {
-        console.log(user)
         return user
     })
 }
