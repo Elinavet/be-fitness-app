@@ -128,6 +128,33 @@ describe("/api/users/:user_id", () => {
     })
 })
 
+describe("/api/users/:user_id/workouts", () => {
+    describe("GET", () => {
+        test("200: Returns a user with the corresponding workouts", () => {
+            return request(app)
+            .get("/api/users/673b26e3656d6301098761d0/workouts")
+            .expect(200)
+            .then((response) => {
+                const workouts = response.body.workouts;
+                expect(workouts.length).toBe(1);
+                workouts.forEach((workout) => {
+                    expect(workout.user_id).toBe("673b26e3656d6301098761d0")
+                    expect(workout).toHaveProperty("_id");
+                    expect(workout).toHaveProperty("exercise_names");
+                    expect(workout).toHaveProperty("difficulty_level");
+                    expect(workout).toHaveProperty("date_completed");
+                    expect(workout).toHaveProperty("duration_in_seconds");
+                    expect(workout).toHaveProperty("xp_earned");
+                    expect(workout.exercise_names).toBeInstanceOf(Array)
+                    workout.exercise_names.forEach((exercise) => {
+                        expect(typeof exercise).toBe("string");
+                    })
+                })
+            })
+        })
+    })
+})
+
 describe("/*", () => {
     test("404: Responds with an error if given an invalid endpoint", () => {
         return request(app)
@@ -138,3 +165,4 @@ describe("/*", () => {
         })
     })
 })
+
