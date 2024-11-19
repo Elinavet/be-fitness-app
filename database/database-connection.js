@@ -1,4 +1,22 @@
-const client = require("./client-connection.js")
+const { MongoClient, ServerApiVersion } = require('mongodb')
+
+require("dotenv").config({
+    path: `${__dirname}/../.env.connection`
+})
+const uri = process.env.DATABASE_URI
+
+if (!process.env.DATABASE_URI) {
+  throw new Error('DATABASE_URI not set');
+}
+
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+})
 
 const ENV = process.env.NODE_ENV || "development"
 

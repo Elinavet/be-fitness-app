@@ -5,6 +5,7 @@
   "main": "connection.js",
   "scripts": {
     "test": "jest",
+    "seed-dev": "node database/run-seed.js",
     "prepare": "husky"
   },
   "keywords": [],
@@ -13,7 +14,8 @@
   "dependencies": {
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
-    "mongodb": "^6.10.0"
+    "mongodb": "^6.10.0",
+    "nodemon": "^3.1.7"
   },
   "devDependencies": {
     "husky": "^9.1.6",
