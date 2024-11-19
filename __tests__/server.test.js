@@ -1,6 +1,6 @@
 const data = require("../database/test-data/index.js")
 const seed = require("../database/seed.js")
-const {client, db} = require("../database/database-connection.js")
+const { client, db } = require("../database/database-connection.js")
 const app = require("../app.js")
 const request = require("supertest")
 
@@ -52,7 +52,7 @@ describe("/api/users/:user_id", () => {
             .expect(200)
             .then((response) => {
                 const {user} = response.body
-                expect(user._id).toBe("673b26e3656d6301098761d0")
+                expect(user._id).toEqual("673b26e3656d6301098761d0")
                 expect(typeof user.name).toBe("string")
                 expect(typeof user.email).toBe("string")
                 expect(typeof user.age).toBe("number")
@@ -70,6 +70,32 @@ describe("/api/users/:user_id", () => {
                     expect(typeof reminder.reminder_time).toBe("string")
                 })
             })
+        })
+        test("400: Responds with a bad request message if ID is invalid", () => {
+            return request(app)
+            .get("/api/users/invalid_id")
+            .expect(400)
+            .then((response) => {
+                expect(response.body.message).toBe("Invalid ID")
+            })
+        })
+        test("404: Responds with a not found message if user does not exist", () => {
+            return request(app)
+            .get("/api/users/673b26e3656d6301098761d5")
+            .then((response) => {
+                expect(response.body.message).toBe("User not found")
+            })
+        })
+    })
+})
+
+describe("/*", () => {
+    test("404: Responds with an error if given an invalid endpoint", () => {
+        return request(app)
+        .get("/api/invalid_endpoint")
+        .expect(404)
+        .then((response) => {
+            expect(response.body.message).toBe("Endpoint not found")
         })
     })
 })
