@@ -35,10 +35,39 @@ describe("/api/users", () => {
                     expect(Array.isArray(user.reminders)).toBe(true)
                     user.reminders.forEach((reminder) => {
                         expect(reminder.constructor).toBe(Object)
-                        expect(reminder).toHaveProperty("user_id")
                         expect(reminder).toHaveProperty("workout_id")
                         expect(typeof reminder.reminder_time).toBe("string")
                     })
+                })
+            })
+        })
+    })
+})
+
+describe("/api/users/:user_id", () => {
+    describe("GET", () => {
+        test("200: Returns a user with the corresponding ID", () => {
+            return request(app)
+            .get("/api/users/673b26e3656d6301098761d0")
+            .expect(200)
+            .then((response) => {
+                const {user} = response.body
+                expect(user._id).toBe("673b26e3656d6301098761d0")
+                expect(typeof user.name).toBe("string")
+                expect(typeof user.email).toBe("string")
+                expect(typeof user.age).toBe("number")
+                expect(typeof user.height).toBe("number")
+                expect(typeof user.weight).toBe("number")
+                expect(typeof user.xp).toBe("number")
+                expect(Array.isArray(user.goals)).toBe(true)
+                user.goals.forEach((goal) => {
+                    expect(typeof goal).toBe("string")
+                })
+                expect(Array.isArray(user.reminders)).toBe(true)
+                user.reminders.forEach((reminder) => {
+                    expect(reminder.constructor).toBe(Object)
+                    expect(reminder).toHaveProperty("workout_id")
+                    expect(typeof reminder.reminder_time).toBe("string")
                 })
             })
         })

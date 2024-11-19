@@ -12,7 +12,6 @@ module.exports = [
     goals: ["Lose weight", "Run a marathon"],
     reminders: [
       {
-        user_id: new ObjectId("673b26e3656d6301098761d0"),
         workout_id: new ObjectId("673b26e3656d6301098761e0"),
         reminder_time: "2024-11-20T08:00:00Z"
       }
@@ -29,7 +28,6 @@ module.exports = [
     goals: ["Build muscle", "Improve flexibility"],
     reminders: [
       {
-        user_id: new ObjectId("673b26e3656d6301098761d1"),
         workout_id: new ObjectId("673b26e3656d6301098761e1"),
         reminder_time: "2024-11-19T07:30:00Z"
       }
@@ -46,7 +44,6 @@ module.exports = [
     goals: ["Increase stamina", "Learn yoga"],
     reminders: [
       {
-        user_id: new ObjectId("673b26e3656d6301098761d2"),
         workout_id: new ObjectId("673b26e3656d6301098761e2"),
         reminder_time: "2024-11-20T06:00:00Z"
       }
@@ -74,7 +71,6 @@ module.exports = [
     goals: ["Run a half marathon", "Eat healthier"],
     reminders: [
       {
-        user_id: new ObjectId("673b26e3656d6301098761d4"),
         workout_id: new ObjectId("673b26e3656d6301098761e3"),
         reminder_time: "2024-11-19T20:00:00Z"
       }
