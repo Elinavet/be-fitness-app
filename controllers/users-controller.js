@@ -1,4 +1,4 @@
-const { fetchAllUsers, fetchUserById } = require("../models/users-model")
+const { fetchAllUsers, fetchUserById, updateUser } = require("../models/users-model")
 
 function getAllUsers(request, response, next){
     fetchAllUsers().then((users) => {
@@ -16,4 +16,12 @@ function getUserById(request, response, next){
     })
 }
 
-module.exports = { getAllUsers, getUserById }
+function patchUser(request, response, next){
+    updateUser(request.params.user_id, request.body).then((user) => {
+        response.status(200).send({user})
+    }).catch((err) => {
+        next(err)
+    })
+}
+
+module.exports = { getAllUsers, getUserById, patchUser }

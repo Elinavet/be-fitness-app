@@ -1,18 +1,19 @@
 const {client, db} = require("../database/database-connection.js")
 const { ObjectId } = require("mongodb")
+const usersDb = db.collection("users")
 
 function fetchAllUsers(){
     return client.connect().then(() => {
-        return db.collection("users").find({}).toArray()
+        return usersDb.find({}).toArray()
     }).then((users) => {
         return users
     })
     
 }
 
-function fetchUserById(Id){
+function fetchUserById(userId){
     return client.connect().then(() => {
-        return db.collection("users").findOne({_id: new ObjectId(Id)})
+        return usersDb.findOne({_id: new ObjectId(userId)})
     }).then((user) => {
         if(!user){
             return Promise.reject({status: 404, message: "User not found"})
@@ -21,4 +22,18 @@ function fetchUserById(Id){
     })
 }
 
-module.exports = { fetchAllUsers, fetchUserById }
+function updateUser(userId, propertiesToUpdate){
+    return client.connect().then(() => {
+        return usersDb.findOne({_id: new ObjectId(userId)})
+    }).then((user) => {
+        if(!user){
+            return Promise.reject({status: 404, message: "User not found"})
+        }
+        user.goals.push(propertiesToUpdate.goal)
+        return usersDb.findOneAndUpdate({_id: new ObjectId(userId)}, {$set: {goals: user.goals}}, {returnDocument: "after"})
+    }).then((user) => {
+        return user
+    })
+}
+
+module.exports = { fetchAllUsers, fetchUserById, updateUser }
