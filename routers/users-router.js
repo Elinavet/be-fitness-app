@@ -1,5 +1,5 @@
 const express = require("express")
-const { getAllUsers, getUserById } = require("../controllers/users-controller.js")
+const { getAllUsers, getUserById, patchUser } = require("../controllers/users-controller.js")
 const router = express.Router()
 
 router.route("/")
@@ -7,5 +7,6 @@ router.route("/")
 
 router.route("/:user_id")
 .get(getUserById)
+.patch(patchUser)
 
 module.exports = router

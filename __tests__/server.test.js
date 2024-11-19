@@ -82,8 +82,21 @@ describe("/api/users/:user_id", () => {
         test("404: Responds with a not found message if user does not exist", () => {
             return request(app)
             .get("/api/users/673b26e3656d6301098761d5")
+            .expect(404)
             .then((response) => {
                 expect(response.body.message).toBe("User not found")
+            })
+        })
+    })
+    describe("PATCH", () => {
+        test("200: Increments XP when given a valid xp property", () => {
+            return request(app)
+            .patch("/api/users/673b26e3656d6301098761d1")
+            .send({xp_increment: 100})
+            .expect(200)
+            .then((response) => {
+                expect(response.body.user._id).toBe("673b26e3656d6301098761d1")
+                expect(response.body.user.xp).toBe(1000)
             })
         })
     })

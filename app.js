@@ -5,6 +5,7 @@ const cors = require("cors")
 const { invalidEndpoint, mongoErrors, internalServerError, customErrors } = require("./error-handlers.js")
 
 app.use(cors())
+app.use(express.json())
 app.use("/api/users", users)
 
 // Error handling
