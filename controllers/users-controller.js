@@ -17,7 +17,6 @@ function getUserById(request, response, next){
 }
 
 function patchUser(request, response, next){
-    console.log(request.params.user_id, request.body)
     updateUser(request.params.user_id, request.body).then((user) => {
         response.status(200).send({user})
     }).catch((err) => {
