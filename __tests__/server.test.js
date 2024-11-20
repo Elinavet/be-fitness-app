@@ -3,6 +3,7 @@ const seed = require("../database/seed.js")
 const { client, db } = require("../database/database-connection.js")
 const app = require("../app.js")
 const request = require("supertest")
+const { fetchWorkoutById } = require("../models/workouts-model.js")
 
 beforeEach(() => {
     return seed(data)
@@ -202,6 +203,49 @@ describe("/api/exercises/:exercise_id", () => {
             .expect(404)
             .then((response) => {
                 expect(response.body.message).toBe("Exercise not found")
+            })
+        })
+    })
+})
+
+describe("/api/workouts/:workout_id", () => {
+    describe("GET", () => {
+        test("200: Returns all workouts for a user given the user ID", () => {
+            return request(app)
+            .get("/api/workouts/673b26e3656d6301098761e0")
+            .expect(200)
+            .then((response) => {
+                const { workout } = response.body;
+                    expect(workout._id).toBe("673b26e3656d6301098761e0");
+                    expect(typeof workout.difficulty_level).toBe("number");
+                    expect(typeof workout.date_completed).toBe("string");
+                    expect(typeof workout.duration_in_seconds).toBe("number");
+                    expect(typeof workout.xp_earned).toBe("number");
+                    expect(workout).toHaveProperty("user_id");
+                    expect(Array.isArray(workout.exercises)).toBe(true);
+                    workout.exercises.forEach((exercise) => {
+                            expect(exercise).toHaveProperty("_id");
+                            expect(exercise).toHaveProperty("exercise_name");
+                            expect(exercise).toHaveProperty("exercise_type");
+                            expect(exercise).toHaveProperty("difficulty_level");
+                            expect(exercise).toHaveProperty("target_muscle_group");
+                        })
+                    })
+        })
+        test("400: Responds with a bad request message if ID is invalid", () => {
+            return request(app)
+            .get("/api/workouts/out_id")
+            .expect(400)
+            .then((response) => {
+                expect(response.body.message).toBe("Invalid ID")
+            })
+        })
+        test("404: Responds with a not found message if workout does not exist", () => {
+            return request(app)
+            .get("/api/workouts/673b26e3656d6301098761e4")
+            .expect(404)
+            .then((response) => {
+                expect(response.body.message).toBe("Workout not found")
             })
         })
     })
