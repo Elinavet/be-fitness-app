@@ -171,6 +171,42 @@ describe("/api/users/:user_id/workouts", () => {
     })
 })
 
+describe("/api/exercises/:exercise_id", () => {
+    describe("GET", () => {
+        test("200: Returns an exercise", () => {
+            return request(app)
+            .get("/api/exercises/673b26e3656d6301098761ba")
+            .expect(200)
+            .then((response) => {
+                const exercise = response.body.exercise;
+                expect(exercise).toHaveProperty("_id");
+                expect(exercise).toHaveProperty("exercise_name")
+                expect(exercise).toHaveProperty("exercise_type")
+                expect(exercise).toHaveProperty("difficulty_level")
+                expect(exercise).toHaveProperty("target_muscle_group")
+                expect(exercise).toBeInstanceOf(Object)
+            })
+        })
+        test("400: Responds with a bad request message if ID is invalid", () => {
+            return request(app)
+            .get("/api/exercises/invalid_exercise_id")
+            .expect(400)
+            .then((response) => {
+                expect(response.body.message).toBe("Invalid ID")
+            })
+        })
+        test("404: Responds with a not found message if user does not exist", () => {
+            return request(app)
+            .get("/api/exercises/673b26e3656d6301098761da")
+            .expect(404)
+            .then((response) => {
+                expect(response.body.message).toBe("Exercise not found")
+            })
+        })
+    })
+})
+
+
 describe("/*", () => {
     test("404: Responds with an error if given an invalid endpoint", () => {
         return request(app)
