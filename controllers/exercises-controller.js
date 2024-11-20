@@ -1,9 +1,9 @@
-const { fetchExerciseById: fetchExercise } = require("../models/exercises-model");
+const { fetchExerciseById } = require("../models/exercises-model");
 
 
-function getExercise(request, response, next) {
+function getExerciseById(request, response, next) {
     const id = request.params.exercise_id;
-    fetchExercise(id).then((exercise) => {
+    fetchExerciseById(id).then((exercise) => {
         response.status(200).send({exercise})
     }).catch((err) => {
         next(err)
@@ -12,4 +12,4 @@ function getExercise(request, response, next) {
 }
 
 
-module.exports = { getExercise }
+module.exports = { getExerciseById }
