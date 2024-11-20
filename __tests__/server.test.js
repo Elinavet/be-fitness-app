@@ -152,6 +152,22 @@ describe("/api/users/:user_id/workouts", () => {
                 })
             })
         })
+        test("400: Responds with a bad request message if ID is invalid", () => {
+            return request(app)
+            .get("/api/users/invalid_id/workouts")
+            .expect(400)
+            .then((response) => {
+                expect(response.body.message).toBe("Invalid ID")
+            })
+        })
+        test("404: Responds with a not found message if user does not exist", () => {
+            return request(app)
+            .get("/api/users/673b26e3656d6301098761da/workouts")
+            .expect(404)
+            .then((response) => {
+                expect(response.body.message).toBe("Workout not found")
+            })
+        })
     })
 })
 
