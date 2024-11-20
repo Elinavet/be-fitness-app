@@ -1,9 +1,8 @@
-const { fetchWorkouts, fetchWorkoutById } = require("../models/workouts-model")
+const { fetchWorkoutsByUserId, fetchWorkoutById } = require("../models/workouts-model.js")
 
 
-function getWorkouts(request, response, next) {
-    const id = request.params.user_id
-    fetchWorkouts(id).then((workouts) => {
+function getWorkoutsByUserId(request, response, next) {
+    fetchWorkoutsByUserId(request.params.user_id).then((workouts) => {
         response.status(200).send({workouts})
     }).catch((err) => {
         next(err)
@@ -19,4 +18,4 @@ function getWorkoutById(request, response, next) {
 
 }
 
-module.exports = { getWorkouts, getWorkoutById }
+module.exports = { getWorkoutsByUserId, getWorkoutById }

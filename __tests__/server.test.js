@@ -210,27 +210,27 @@ describe("/api/exercises/:exercise_id", () => {
 
 describe("/api/workouts/:workout_id", () => {
     describe("GET", () => {
-        test("200: Returns all workouts for a user given the user ID", () => {
+        test("200: Returns a workout given the workout ID", () => {
             return request(app)
             .get("/api/workouts/673b26e3656d6301098761e0")
             .expect(200)
             .then((response) => {
                 const { workout } = response.body;
-                    expect(workout._id).toBe("673b26e3656d6301098761e0");
-                    expect(typeof workout.difficulty_level).toBe("number");
-                    expect(typeof workout.date_completed).toBe("string");
-                    expect(typeof workout.duration_in_seconds).toBe("number");
-                    expect(typeof workout.xp_earned).toBe("number");
-                    expect(workout).toHaveProperty("user_id");
-                    expect(Array.isArray(workout.exercises)).toBe(true);
-                    workout.exercises.forEach((exercise) => {
-                            expect(exercise).toHaveProperty("_id");
-                            expect(exercise).toHaveProperty("exercise_name");
-                            expect(exercise).toHaveProperty("exercise_type");
-                            expect(exercise).toHaveProperty("difficulty_level");
-                            expect(exercise).toHaveProperty("target_muscle_group");
-                        })
-                    })
+                expect(workout._id).toBe("673b26e3656d6301098761e0");
+                expect(typeof workout.difficulty_level).toBe("number");
+                expect(typeof workout.date_completed).toBe("string");
+                expect(typeof workout.duration_in_seconds).toBe("number");
+                expect(typeof workout.xp_earned).toBe("number");
+                expect(workout).toHaveProperty("user_id");
+                expect(Array.isArray(workout.exercises)).toBe(true);
+                workout.exercises.forEach((exercise) => {
+                    expect(exercise).toHaveProperty("_id");
+                    expect(exercise).toHaveProperty("exercise_name");
+                    expect(exercise).toHaveProperty("exercise_type");
+                    expect(exercise).toHaveProperty("difficulty_level");
+                    expect(exercise).toHaveProperty("target_muscle_group");
+                })
+            })
         })
         test("400: Responds with a bad request message if ID is invalid", () => {
             return request(app)
