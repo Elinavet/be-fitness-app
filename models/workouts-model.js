@@ -1,6 +1,6 @@
 const { ObjectId } = require("mongodb");
-const { client, db } = require("../database/database-connection");
-const { fetchExerciseById } = require("./exercises-model");
+const { client, db } = require("../database/connection.js");
+const { fetchExerciseById } = require("./exercises-model.js");
 const workoutsDb = db.collection("workouts");
 
 function fetchWorkoutsByUserId(userId) {

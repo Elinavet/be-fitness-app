@@ -1,4 +1,4 @@
-const {client, db} = require("../database/database-connection.js")
+const {client, db} = require("../database/connection.js")
 const { ObjectId } = require("mongodb")
 const usersDb = db.collection("users")
 

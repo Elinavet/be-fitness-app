@@ -1,6 +1,6 @@
 const devData = require("./dev-data/index.js")
 const seed = require("./seed.js")
-const {db, client} = require("./database-connection.js")
+const {db, client} = require("./connection.js")
 
 function runSeed(){
     client.connect().then(() => {
