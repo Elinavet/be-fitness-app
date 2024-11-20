@@ -1,4 +1,4 @@
-const { fetchExercise } = require("../models/exercises-model");
+const { fetchExerciseById: fetchExercise } = require("../models/exercises-model");
 
 
 function getExercise(request, response, next) {
