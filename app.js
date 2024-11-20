@@ -5,9 +5,13 @@ const exercises = require("./routers/exercises-router.js")
 const workouts = require("./routers/workouts-router.js")
 const cors = require("cors")
 const { invalidEndpoint, mongoErrors, internalServerError, customErrors } = require("./error-handlers.js")
+const endpoints = require("./routers/endpoints-router.js")
 
 app.use(cors())
 app.use(express.json())
+
+app.use("/api", endpoints)
+
 app.use("/api/users", users)
 app.use("/api/exercises", exercises)
 app.use("/api/workouts/", workouts)

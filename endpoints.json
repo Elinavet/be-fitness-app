@@ -1,0 +1,106 @@
+{"users": {
+    "GET /api/users": {
+        "description": "Returns an array of object representations of users",
+        "exampleRequest": "GET /api/users",
+        "exampleResponse": {
+            "users": [
+                {
+                    "_id": "673b26e3656d6301098761d0",
+                    "name": "Alice Johnson",
+                    "email": "alice.johnson@example.com",
+                    "age": 29,
+                    "height": 165,
+                    "weight": 60,
+                    "xp": 1200,
+                    "goals": [
+                        "Lose weight",
+                        "Run a marathon"
+                    ],
+                    "reminders": [
+                        {
+                            "workout_id": "673b26e3656d6301098761e0",
+                            "reminder_time": "2024-11-20T08:00:00Z"
+                        }
+                    ],
+                    "image_url": "https://hips.hearstapps.com/hmg-prod/images/hlh070123feacover-004-hi-646d26d7015ef.jpg"
+                },
+                {
+                    "_id": "673b26e3656d6301098761d1",
+                    "name": "Bob Smith",
+                    "email": "bob.smith@example.com",
+                    "age": 35,
+                    "height": 180,
+                    "weight": 85,
+                    "xp": 900,
+                    "goals": [
+                        "Build muscle",
+                        "Improve flexibility"
+                    ],
+                    "reminders": [
+                        {
+                            "workout_id": "673b26e3656d6301098761e1",
+                            "reminder_time": "2024-11-19T07:30:00Z"
+                        }
+                    ],
+                    "image_url": "https://hips.hearstapps.com/hmg-prod/images/hlh070123feacover-004-hi-646d26d7015ef.jpg"
+                },
+                {
+                    "_id": "673b26e3656d6301098761d2",
+                    "name": "Charlie Davis",
+                    "email": "charlie.davis@example.com",
+                    "age": 24,
+                    "height": 172,
+                    "weight": 70,
+                    "xp": 600,
+                    "goals": [
+                        "Increase stamina",
+                        "Learn yoga"
+                    ],
+                    "reminders": [
+                        {
+                            "workout_id": "673b26e3656d6301098761e2",
+                            "reminder_time": "2024-11-20T06:00:00Z"
+                        }
+                    ],
+                    "image_url": "https://hips.hearstapps.com/hmg-prod/images/hlh070123feacover-004-hi-646d26d7015ef.jpg"
+                }
+            ]
+        }
+    },
+    "GET /api/users/:user_id": {
+        "description": "Returns a single user given the user ID",
+        "exampleRequest": "GET /api/users/673b26e3656d6301098761d2",
+        "exampleResponse": {
+            "user": {
+                "_id": "673b26e3656d6301098761d2",
+                "name": "Charlie Davis",
+                "email": "charlie.davis@example.com",
+                "age": 24,
+                "height": 172,
+                "weight": 70,
+                "xp": 600,
+                "goals": [
+                    "Increase stamina",
+                    "Learn yoga"
+                ],
+                "reminders": [
+                    {
+                        "workout_id": "673b26e3656d6301098761e2",
+                        "reminder_time": "2024-11-20T06:00:00Z"
+                    }
+                ],
+                "image_url": "https://hips.hearstapps.com/hmg-prod/images/hlh070123feacover-004-hi-646d26d7015ef.jpg"
+            }
+        }
+    },
+    "PATCH /api/users/:user_id": {
+        "description": "Adds a new goal to user goals array",
+        "exampleRequest": "PATCH /api/users/673b26e3656d6301098761d2",
+        "exampleRequestBody": {
+            "goal": "Goal A" 
+        },
+        "exampleResponse": {
+            "a": "a"
+        }
+    }
+}}

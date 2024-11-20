@@ -4,6 +4,7 @@ const { client, db } = require("../database/database-connection.js")
 const app = require("../app.js")
 const request = require("supertest")
 const { fetchWorkoutById } = require("../models/workouts-model.js")
+const endpoints = require("../endpoints.json")
 
 beforeEach(() => {
     return seed(data)
@@ -11,6 +12,19 @@ beforeEach(() => {
 
 afterAll(() => {
     client.close()
+})
+
+describe("/api", () => {
+    describe("GET", () => {
+        test("200: Responds with a JSON object detailing all endpoints", () => {
+            return request(app)
+            .get("/api")
+            .expect(200)
+            .then((response) => {
+                expect(response.body.endpoints).toEqual(endpoints)
+            })
+        })
+    })
 })
 
 describe("/api/users", () => {
