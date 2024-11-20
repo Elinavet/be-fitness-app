@@ -3,7 +3,7 @@ const { client, db } = require("../database/database-connection");
 const { fetchExerciseById } = require("./exercises-model");
 const workoutsDb = db.collection("workouts");
 
-function fetchWorkouts(userId) {
+function fetchWorkoutsByUserId(userId) {
     return client.connect().then(() => {
         return workoutsDb.find({user_id: new ObjectId(userId)}).toArray();
     }).then((workouts) => {
@@ -48,4 +48,4 @@ function fetchWorkoutById(workoutId) {
 }
 
 
-module.exports = { fetchWorkouts, fetchWorkoutById }
+module.exports = { fetchWorkoutsByUserId, fetchWorkoutById }
