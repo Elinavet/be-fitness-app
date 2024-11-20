@@ -1,5 +1,5 @@
 const { ObjectId } = require("mongodb");
-const { client, db } = require("../database/database-connection");
+const { client, db } = require("../database/connection.js");
 const exerciseDb = db.collection("exercises")
 
 function fetchAllExercises(){

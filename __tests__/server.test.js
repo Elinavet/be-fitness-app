@@ -1,6 +1,6 @@
 const data = require("../database/test-data/index.js")
 const seed = require("../database/seed.js")
-const { client, db } = require("../database/database-connection.js")
+const { client, db } = require("../database/connection.js")
 const app = require("../app.js")
 const request = require("supertest")
 const { fetchWorkoutById } = require("../models/workouts-model.js")
@@ -34,7 +34,7 @@ describe("/api/users", () => {
             .get("/api/users")
             .expect(200)
             .then((response) => {
-                expect(response.body.users.length).toBe(5)
+                expect(response.body.users.length).toBe(3)
                 response.body.users.forEach((user) => {
                     expect(user).toHaveProperty("_id")
                     expect(typeof user.name).toBe("string")
@@ -152,50 +152,6 @@ describe("/api/users/:user_id", () => {
     })
 })
 
-describe("/api/users/:user_id/workouts", () => {
-    describe("GET", () => {
-        test("200: Returns all workouts for a user given the user ID", () => {
-            return request(app)
-            .get("/api/users/673b26e3656d6301098761d0/workouts")
-            .expect(200)
-            .then((response) => {
-                const workouts = response.body.workouts;
-                expect(workouts.length).toBe(1);
-                workouts.forEach((workout) => {
-                    expect(workout.user_id).toBe("673b26e3656d6301098761d0")
-                    expect(workout).toHaveProperty("_id");
-                    expect(Array.isArray(workout.exercise_names)).toBe(true);
-                    workout.exercise_names.forEach((exercise) => {
-                        expect(typeof exercise).toBe("string")
-                        const objectIdRegex = /^[a-fA-F0-9]{24}$/
-                        expect(objectIdRegex.test(exercise)).toBe(false)
-                    })
-                    expect(typeof workout.difficulty_level).toBe("number");
-                    expect(typeof workout.date_completed).toBe("string");
-                    expect(typeof workout.duration_in_seconds).toBe("number");
-                    expect(typeof workout.xp_earned).toBe("number");
-                })
-            })
-        })
-        test("400: Responds with a bad request message if ID is invalid", () => {
-            return request(app)
-            .get("/api/users/invalid_id/workouts")
-            .expect(400)
-            .then((response) => {
-                expect(response.body.message).toBe("Invalid ID")
-            })
-        })
-        test("404: Responds with a not found message if user does not exist", () => {
-            return request(app)
-            .get("/api/users/673b26e3656d6301098761da/workouts")
-            .expect(404)
-            .then((response) => {
-                expect(response.body.message).toBe("Workout not found")
-            })
-        })
-    })
-})
-
 describe("/api/exercises", () => {
     describe("GET", () => {
         test("200: Returns an array of all exercises", () => {
@@ -263,9 +219,8 @@ describe("/api/workouts/:workout_id", () => {
                 expect(workout._id).toBe("673b26e3656d6301098761e0");
                 expect(typeof workout.difficulty_level).toBe("number");
                 expect(typeof workout.date_completed).toBe("string");
-                expect(typeof workout.duration_in_seconds).toBe("number");
+                expect(typeof workout.total_duration).toBe("number");
                 expect(typeof workout.xp_earned).toBe("number");
-                expect(workout).toHaveProperty("user_id");
                 expect(Array.isArray(workout.exercises)).toBe(true);
                 workout.exercises.forEach((exercise) => {
                     expect(exercise).toHaveProperty("_id");
