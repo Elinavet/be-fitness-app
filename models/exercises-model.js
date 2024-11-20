@@ -2,6 +2,14 @@ const { ObjectId } = require("mongodb");
 const { client, db } = require("../database/database-connection");
 const exerciseDb = db.collection("exercises")
 
+function fetchAllExercises(){
+    return client.connect().then(() => {
+        return exerciseDb.find({}).toArray()
+    }).then((exercises) => {
+        return exercises
+    })
+}
+
 function fetchExerciseById(exerciseId) {
     return client.connect().then(() => {
         return exerciseDb.findOne({_id: new ObjectId(exerciseId)})
@@ -13,4 +21,4 @@ function fetchExerciseById(exerciseId) {
     })
 }
 
-module.exports = { fetchExerciseById }
+module.exports = { fetchAllExercises, fetchExerciseById }

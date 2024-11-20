@@ -173,6 +173,27 @@ describe("/api/users/:user_id/workouts", () => {
     })
 })
 
+describe("/api/exercises", () => {
+    describe("GET", () => {
+        test("200: Returns an array of all exercises", () => {
+            return request(app)
+            .get("/api/exercises")
+            .expect(200)
+            .then((response) => {
+                expect(response.body.exercises.length).toBe(6)
+                response.body.exercises.forEach((exercise) => {
+                expect(exercise).toHaveProperty("_id");
+                expect(typeof exercise.exercise_name).toBe("string")
+                expect(typeof exercise.exercise_type).toBe("string")
+                expect(typeof exercise.difficulty_level).toBe("number")
+                expect(typeof exercise.target_muscle_group).toBe("string")
+                expect(typeof exercise.description).toBe("string")
+                })
+            })
+        })
+    })
+})
+
 describe("/api/exercises/:exercise_id", () => {
     describe("GET", () => {
         test("200: Returns an exercise with the corresponding ID", () => {
@@ -181,12 +202,12 @@ describe("/api/exercises/:exercise_id", () => {
             .expect(200)
             .then((response) => {
                 const exercise = response.body.exercise;
-                expect(exercise).toBeInstanceOf(Object)
                 expect(exercise._id).toBe("673b26e3656d6301098761ba");
                 expect(typeof exercise.exercise_name).toBe("string")
                 expect(typeof exercise.exercise_type).toBe("string")
                 expect(typeof exercise.difficulty_level).toBe("number")
                 expect(typeof exercise.target_muscle_group).toBe("string")
+                expect(typeof exercise.description).toBe("string")
             })
         })
         test("400: Responds with a bad request message if ID is invalid", () => {
@@ -225,10 +246,11 @@ describe("/api/workouts/:workout_id", () => {
                 expect(Array.isArray(workout.exercises)).toBe(true);
                 workout.exercises.forEach((exercise) => {
                     expect(exercise).toHaveProperty("_id");
-                    expect(exercise).toHaveProperty("exercise_name");
-                    expect(exercise).toHaveProperty("exercise_type");
-                    expect(exercise).toHaveProperty("difficulty_level");
-                    expect(exercise).toHaveProperty("target_muscle_group");
+                    expect(typeof exercise.exercise_name).toBe("string");
+                    expect(typeof exercise.exercise_type).toBe("string");
+                    expect(typeof exercise.difficulty_level).toBe("number");
+                    expect(typeof exercise.target_muscle_group).toBe("string");
+                    expect(typeof exercise.description).toBe("string")
                 })
             })
         })
