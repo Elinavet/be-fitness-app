@@ -1,4 +1,4 @@
-const { fetchWorkouts } = require("../models/workouts-model")
+const { fetchWorkouts, fetchWorkoutById } = require("../models/workouts-model")
 
 
 function getWorkouts(request, response, next) {
@@ -10,4 +10,13 @@ function getWorkouts(request, response, next) {
     })
 }
 
-module.exports = { getWorkouts }
+function getWorkoutById(request, response, next) {
+    fetchWorkoutById(request.params.workout_id).then((workout) => {
+        response.status(200).send({workout})
+    }).catch((err) => {
+        next(err);
+    })
+
+}
+
+module.exports = { getWorkouts, getWorkoutById }

@@ -29,5 +29,23 @@ function fetchWorkouts(userId) {
     })
 }
 
+function fetchWorkoutById(workoutId) {
+    return client.connect().then(() => {
+        return workoutsDb.findOne({_id: new ObjectId(workoutId)});
+    }).then((workout) => {
+        if(!workout) {
+            return Promise.reject({status: 404, message: "Workout not found"});
+        }
+        const promises = workout.exercise_ids.map((exerciseId) => {
+            return fetchExerciseById(exerciseId);
+        })
+        return Promise.all([Promise.all(promises), workout])
+    }).then(([exercises, workout]) => {
+        workout.exercises = exercises
+        delete workout.exercise_ids
+        return workout;
+    })
+}
 
-module.exports = { fetchWorkouts }
+
+module.exports = { fetchWorkouts, fetchWorkoutById }
