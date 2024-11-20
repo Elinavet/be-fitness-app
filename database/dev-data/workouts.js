@@ -9,12 +9,13 @@ module.exports = [
       new ObjectId("673b26e3656d6301098761bb"), // Squat
       new ObjectId("673b26e3656d6301098761be"), // Plank
       new ObjectId("673b26e3656d6301098761bc"), // Pull-up
-      new ObjectId("673b26e3656d6301098761bd")  // Bench Press
+      new ObjectId("673b26e3656d6301098761bd"), // Bench Press
+      new ObjectId("673b26e3656d6301098761bf")  // Deadlift
     ],
     difficulty_level: 1,
     date_completed: new Date("2024-11-20T08:00:00Z"),
-    duration_in_seconds: 3600, // Adjusted for longer workout
-    xp_earned: 400
+    duration_in_seconds: 4800,
+    xp_earned: 500
   },
   {
     _id: new ObjectId("673b26e3656d6301098761e1"),
@@ -28,7 +29,7 @@ module.exports = [
     ],
     difficulty_level: 3,
     date_completed: new Date("2024-11-19T07:30:00Z"),
-    duration_in_seconds: 5400, // Adjusted for longer workout
+    duration_in_seconds: 5400,
     xp_earned: 600
   },
   {
@@ -39,12 +40,14 @@ module.exports = [
       new ObjectId("673b26e3656d6301098761be"), // Plank
       new ObjectId("673b26e3656d6301098761ba"), // Push-up
       new ObjectId("673b26e3656d6301098761bc"), // Pull-up
-      new ObjectId("673b26e3656d6301098761bb")  // Squat
+      new ObjectId("673b26e3656d6301098761bb"), // Squat
+      new ObjectId("673b26e3656d6301098761bf"), // Deadlift
+      new ObjectId("673b26e3656d6301098761ba")  // Push-up (repeated for variety)
     ],
     difficulty_level: 2,
     date_completed: new Date("2024-11-20T06:00:00Z"),
-    duration_in_seconds: 4500, // Adjusted for longer workout
-    xp_earned: 500
+    duration_in_seconds: 5400,
+    xp_earned: 600
   },
   {
     _id: new ObjectId("673b26e3656d6301098761e3"),
@@ -54,12 +57,14 @@ module.exports = [
       new ObjectId("673b26e3656d6301098761bc"), // Pull-up
       new ObjectId("673b26e3656d6301098761bb"), // Squat
       new ObjectId("673b26e3656d6301098761bd"), // Bench Press
-      new ObjectId("673b26e3656d6301098761ba")  // Push-up
+      new ObjectId("673b26e3656d6301098761ba"), // Push-up
+      new ObjectId("673b26e3656d6301098761be"), // Plank
+      new ObjectId("673b26e3656d6301098761bc"), // Pull-up (repeated)
+      new ObjectId("673b26e3656d6301098761bf")  // Deadlift (repeated)
     ],
     difficulty_level: 3,
     date_completed: new Date("2024-11-19T20:00:00Z"),
-    duration_in_seconds: 6000, // Adjusted for longer workout
+    duration_in_seconds: 7200,
     xp_earned: 800
   }
 ]
-
