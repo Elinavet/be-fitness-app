@@ -131,6 +131,15 @@ describe("/api/users/:user_id", () => {
                 expect(response.body.message).toBe("Invalid ID")
             })
         })
+        test("400: Responds with an error message when given an empty object", () => {
+            return request(app)
+            .patch("/api/users/673b26e3656d6301098761d1")
+            .send({})
+            .expect(400)
+            .then((response) => {
+                expect(response.body.message).toBe("Goals body cannot be empty")
+            })
+        })
         test("404: Responds with a not found message when user does not exist", () => {
             return request(app)
             .patch("/api/users/673b26e3656d6301098761d5")
