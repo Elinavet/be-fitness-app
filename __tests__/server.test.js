@@ -4,6 +4,7 @@ const { client, db } = require("../database/connection.js")
 const app = require("../app.js")
 const request = require("supertest")
 const endpoints = require("../endpoints.json")
+const getTotalDurationOfWorkout = require("../utils/get-total-duration-of-workout.js")
 
 beforeEach(() => {
     return seed(data)
@@ -42,24 +43,17 @@ describe("/api/users", () => {
                     expect(typeof user.height).toBe("number")
                     expect(typeof user.weight).toBe("number")
                     expect(typeof user.xp).toBe("number")
+                    expect(typeof user.level).toBe("number")
                     expect(Array.isArray(user.goals)).toBe(true)
                     user.goals.forEach((goal) => {
                         expect(typeof goal).toBe("string")
                     })
                     expect(Array.isArray(user.reminders)).toBe(true)
                     user.reminders.forEach((reminder) => {
-                        expect(reminder.constructor).toBe(Object)
-                        expect(reminder).toHaveProperty("workout_id")
+                        expect(typeof reminder.message).toBe("string")
                         expect(typeof reminder.reminder_time).toBe("string")
                     })
                     expect(typeof user.image_url).toBe("string")
-                    expect(Array.isArray(user.workouts)).toBe(true)
-                    user.workouts.forEach((workout) => {
-                        expect(workout).toHaveProperty("_id")
-                        expect(typeof workout.difficulty_level).toBe("number")
-                        expect(Array.isArray(workout.exercises)).toBe(true)
-                        expect(typeof workout.total_duration).toBe("number")
-                    })
                 })
             })
         })
@@ -70,27 +64,28 @@ describe("/api/users/:user_id", () => {
     describe("GET", () => {
         test("200: Returns a user with the corresponding ID", () => {
             return request(app)
-            .get("/api/users/673b26e3656d6301098761d0")
+            .get("/api/users/648d9f1a7a2d5b1f1e6d1235")
             .expect(200)
             .then((response) => {
                 const {user} = response.body
-                expect(user._id).toEqual("673b26e3656d6301098761d0")
+                expect(user._id).toEqual("648d9f1a7a2d5b1f1e6d1235")
                 expect(typeof user.name).toBe("string")
                 expect(typeof user.email).toBe("string")
                 expect(typeof user.age).toBe("number")
                 expect(typeof user.height).toBe("number")
                 expect(typeof user.weight).toBe("number")
                 expect(typeof user.xp).toBe("number")
+                expect(typeof user.level).toBe("number")
                 expect(Array.isArray(user.goals)).toBe(true)
                 user.goals.forEach((goal) => {
                     expect(typeof goal).toBe("string")
                 })
                 expect(Array.isArray(user.reminders)).toBe(true)
                 user.reminders.forEach((reminder) => {
-                    expect(reminder.constructor).toBe(Object)
-                    expect(reminder).toHaveProperty("workout_id")
+                    expect(typeof reminder.message).toBe("string")
                     expect(typeof reminder.reminder_time).toBe("string")
                 })
+                expect(typeof user.image_url).toBe("string")
             })
         })
         test("400: Responds with a bad request message if ID is invalid", () => {
@@ -113,7 +108,7 @@ describe("/api/users/:user_id", () => {
     describe("PATCH", () => {
         test("200: Adds a goal to the goal array when given a valid goal property", () => {
             return request(app)
-            .patch("/api/users/673b26e3656d6301098761d1")
+            .patch("/api/users/648d9f1a7a2d5b1f1e6d1235")
             .send({goal: "Goal 3"})
             .expect(200)
             .then((response) => {
@@ -122,7 +117,7 @@ describe("/api/users/:user_id", () => {
         })
         test("200: Ignores any extra keys on object being sent", () => {
             return request(app)
-            .patch("/api/users/673b26e3656d6301098761d1")
+            .patch("/api/users/648d9f1a7a2d5b1f1e6d1235")
             .send({goal: "Goal 3", extraKey: "Extra value"})
             .expect(200)
             .then((response) => {
@@ -140,7 +135,7 @@ describe("/api/users/:user_id", () => {
         })
         test("400: Responds with an error message when given an empty object", () => {
             return request(app)
-            .patch("/api/users/673b26e3656d6301098761d1")
+            .patch("/api/users/648d9f1a7a2d5b1f1e6d1235")
             .send({})
             .expect(400)
             .then((response) => {
@@ -149,7 +144,7 @@ describe("/api/users/:user_id", () => {
         })
         test("404: Responds with a not found message when user does not exist", () => {
             return request(app)
-            .patch("/api/users/673b26e3656d6301098761d5")
+            .patch("/api/users/673b26e3656d6301098761da")
             .send({goal: "Goal 3"})
             .expect(404)
             .then((response) => {
@@ -166,12 +161,11 @@ describe("/api/exercises", () => {
             .get("/api/exercises")
             .expect(200)
             .then((response) => {
-                expect(response.body.exercises.length).toBe(17)
+                expect(response.body.exercises.length).toBe(9)
                 response.body.exercises.forEach((exercise) => {
                 expect(exercise).toHaveProperty("_id");
                 expect(typeof exercise.name).toBe("string")
                 expect(typeof exercise.type).toBe("string")
-                expect(typeof exercise.difficulty_level).toBe("number")
                 expect(typeof exercise.target_muscle_group).toBe("string")
                 expect(typeof exercise.description).toBe("string")
                 })
@@ -184,14 +178,13 @@ describe("/api/exercises/:exercise_id", () => {
     describe("GET", () => {
         test("200: Returns an exercise with the corresponding ID", () => {
             return request(app)
-            .get("/api/exercises/673b26e3656d6301098762a0")
+            .get("/api/exercises/648d9f1a7a2d5b1f1e6d1232")
             .expect(200)
             .then((response) => {
                 const exercise = response.body.exercise;
-                expect(exercise._id).toBe("673b26e3656d6301098762a0");
+                expect(exercise._id).toBe("648d9f1a7a2d5b1f1e6d1232");
                 expect(typeof exercise.name).toBe("string")
                 expect(typeof exercise.type).toBe("string")
-                expect(typeof exercise.difficulty_level).toBe("number")
                 expect(typeof exercise.target_muscle_group).toBe("string")
                 expect(typeof exercise.duration_in_seconds).toBe("number")
                 expect(typeof exercise.description).toBe("string")
@@ -220,19 +213,18 @@ describe("/api/workouts/:workout_id", () => {
     describe("GET", () => {
         test("200: Returns a workout given the workout ID", () => {
             return request(app)
-            .get("/api/workouts/673b26e3656d6301098761e0")
+            .get("/api/workouts/648d9f1a7a2d5b1f1e6d1237")
             .expect(200)
             .then((response) => {
                 const { workout } = response.body;
-                expect(workout._id).toBe("673b26e3656d6301098761e0");
-                expect(typeof workout.difficulty_level).toBe("number");
+                expect(workout._id).toBe("648d9f1a7a2d5b1f1e6d1237");
+                expect(typeof workout.level).toBe("number");
                 expect(typeof workout.total_duration).toBe("number");
                 expect(Array.isArray(workout.exercises)).toBe(true);
                 workout.exercises.forEach((exercise) => {
                     expect(exercise).toHaveProperty("_id");
                     expect(typeof exercise.name).toBe("string");
                     expect(typeof exercise.type).toBe("string");
-                    expect(typeof exercise.difficulty_level).toBe("number");
                     expect(typeof exercise.target_muscle_group).toBe("string");
                     expect(typeof exercise.description).toBe("string")
                 })
