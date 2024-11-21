@@ -4,68 +4,231 @@
             "description": "Returns an array of object representations of users",
             "exampleRequest": "GET /api/users",
             "exampleResponse": {
-                "users": [
-                    {
-                        "_id": "673b26e3656d6301098761d0",
-                        "name": "Alice Johnson",
-                        "email": "alice.johnson@example.com",
-                        "age": 29,
-                        "height": 165,
-                        "weight": 60,
-                        "xp": 1200,
-                        "goals": [
-                            "Lose weight",
-                            "Run a marathon"
-                        ],
-                        "reminders": [
-                            {
-                                "workout_id": "673b26e3656d6301098761e0",
-                                "reminder_time": "2024-11-20T08:00:00Z"
-                            }
-                        ],
-                        "image_url": "https://hips.hearstapps.com/hmg-prod/images/hlh070123feacover-004-hi-646d26d7015ef.jpg"
-                    },
-                    {
-                        "_id": "673b26e3656d6301098761d1",
-                        "name": "Bob Smith",
-                        "email": "bob.smith@example.com",
-                        "age": 35,
-                        "height": 180,
-                        "weight": 85,
-                        "xp": 900,
-                        "goals": [
-                            "Build muscle",
-                            "Improve flexibility"
-                        ],
-                        "reminders": [
-                            {
-                                "workout_id": "673b26e3656d6301098761e1",
-                                "reminder_time": "2024-11-19T07:30:00Z"
-                            }
-                        ],
-                        "image_url": "https://hips.hearstapps.com/hmg-prod/images/hlh070123feacover-004-hi-646d26d7015ef.jpg"
-                    },
-                    {
-                        "_id": "673b26e3656d6301098761d2",
-                        "name": "Charlie Davis",
-                        "email": "charlie.davis@example.com",
-                        "age": 24,
-                        "height": 172,
-                        "weight": 70,
-                        "xp": 600,
-                        "goals": [
-                            "Increase stamina",
-                            "Learn yoga"
-                        ],
-                        "reminders": [
-                            {
-                                "workout_id": "673b26e3656d6301098761e2",
-                                "reminder_time": "2024-11-20T06:00:00Z"
-                            }
-                        ],
-                        "image_url": "https://hips.hearstapps.com/hmg-prod/images/hlh070123feacover-004-hi-646d26d7015ef.jpg"
-                    }
-                ]
+                "users": {
+                    "users": [
+                        {
+                            "_id": "673b26e3656d6301098761d0",
+                            "name": "Alice Johnson",
+                            "email": "alice.johnson@example.com",
+                            "age": 30,
+                            "height": 165,
+                            "weight": 55,
+                            "xp": 1500,
+                            "difficulty_level": 2,
+                            "goals": [
+                                "Lose weight",
+                                "Build endurance"
+                            ],
+                            "reminders": [
+                                {
+                                    "workout_id": "673b26e3656d6301098761e0",
+                                    "reminder_time": "2024-11-21T08:00:00.000Z"
+                                }
+                            ],
+                            "image_url": "https://hips.hearstapps.com/hmg-prod/images/hlh070123feacover-004-hi-646d26d7015ef.jpg",
+                            "workouts": [
+                                {
+                                    "_id": "673b26e3656d6301098761e0",
+                                    "difficulty_level": 1,
+                                    "exercises": [
+                                        {
+                                            "_id": "673b26e3656d6301098762a0",
+                                            "name": "Jumping Jacks",
+                                            "type": "Home",
+                                            "difficulty_level": 1,
+                                            "target_muscle_group": "Full Body",
+                                            "duration_in_seconds": 30,
+                                            "description": "Perform quick jumps while spreading and closing your legs and arms simultaneously.",
+                                            "xp": 50
+                                        },
+                                        {
+                                            "_id": "673b26e3656d6301098762a1",
+                                            "name": "Push-ups",
+                                            "type": "Home",
+                                            "difficulty_level": 1,
+                                            "target_muscle_group": "Chest, Arms",
+                                            "duration_in_seconds": 40,
+                                            "description": "Lower and raise your body while keeping your back straight and your arms bent at 90 degrees.",
+                                            "xp": 75
+                                        }
+                                    ],
+                                    "total_duration": 70
+                                },
+                                {
+                                    "_id": "673b26e3656d6301098761e2",
+                                    "difficulty_level": 2,
+                                    "exercises": [
+                                        {
+                                            "_id": "673b26e3656d6301098762c0",
+                                            "name": "Lunges",
+                                            "type": "Home",
+                                            "difficulty_level": 2,
+                                            "target_muscle_group": "Legs, Glutes",
+                                            "duration_in_seconds": 40,
+                                            "description": "Step forward with one leg, lower your body, and push back to starting position.",
+                                            "xp": 90
+                                        },
+                                        {
+                                            "_id": "673b26e3656d6301098762c1",
+                                            "name": "Dips",
+                                            "type": "Home or Gym",
+                                            "difficulty_level": 2,
+                                            "target_muscle_group": "Triceps, Chest",
+                                            "duration_in_seconds": 30,
+                                            "description": "Lower your body by bending your arms while supporting yourself on a stable surface.",
+                                            "xp": 85
+                                        }
+                                    ],
+                                    "total_duration": 70
+                                },
+                                {
+                                    "_id": "673b26e3656d6301098761e4",
+                                    "difficulty_level": 2,
+                                    "exercises": [
+                                        {
+                                            "_id": "673b26e3656d6301098762c0",
+                                            "name": "Lunges",
+                                            "type": "Home",
+                                            "difficulty_level": 2,
+                                            "target_muscle_group": "Legs, Glutes",
+                                            "duration_in_seconds": 40,
+                                            "description": "Step forward with one leg, lower your body, and push back to starting position.",
+                                            "xp": 90
+                                        },
+                                        {
+                                            "_id": "673b26e3656d6301098762c1",
+                                            "name": "Dips",
+                                            "type": "Home or Gym",
+                                            "difficulty_level": 2,
+                                            "target_muscle_group": "Triceps, Chest",
+                                            "duration_in_seconds": 30,
+                                            "description": "Lower your body by bending your arms while supporting yourself on a stable surface.",
+                                            "xp": 85
+                                        },
+                                        {
+                                            "_id": "673b26e3656d6301098762c2",
+                                            "name": "Shoulder Taps",
+                                            "type": "Home",
+                                            "difficulty_level": 2,
+                                            "target_muscle_group": "Core, Shoulders",
+                                            "duration_in_seconds": 30,
+                                            "description": "In a plank position, alternate tapping your shoulders with opposite hands.",
+                                            "xp": 80
+                                        }
+                                    ],
+                                    "total_duration": 100
+                                }
+                            ]
+                        },
+                        {
+                            "_id": "673b26e3656d6301098761d1",
+                            "name": "Bob Smith",
+                            "email": "bob.smith@example.com",
+                            "age": 25,
+                            "height": 180,
+                            "weight": 75,
+                            "xp": 2000,
+                            "difficulty_level": 3,
+                            "goals": [
+                                "Gain muscle",
+                                "Increase strength"
+                            ],
+                            "reminders": [
+                                {
+                                    "workout_id": "673b26e3656d6301098761e1",
+                                    "reminder_time": "2024-11-22T08:00:00.000Z"
+                                }
+                            ],
+                            "image_url": "https://hips.hearstapps.com/hmg-prod/images/hlh070123feacover-004-hi-646d26d7015ef.jpg",
+                            "workouts": [
+                                {
+                                    "_id": "673b26e3656d6301098761e1",
+                                    "difficulty_level": 3,
+                                    "exercises": [
+                                        {
+                                            "_id": "673b26e3656d6301098762b0",
+                                            "name": "Deadlift",
+                                            "type": "Gym",
+                                            "difficulty_level": 3,
+                                            "target_muscle_group": "Back, Legs",
+                                            "duration_in_seconds": 60,
+                                            "description": "Lift a barbell from the ground while maintaining a straight back.",
+                                            "xp": 150
+                                        },
+                                        {
+                                            "_id": "673b26e3656d6301098762b1",
+                                            "name": "Bench Press",
+                                            "type": "Gym",
+                                            "difficulty_level": 3,
+                                            "target_muscle_group": "Chest, Arms",
+                                            "duration_in_seconds": 50,
+                                            "description": "Push a weighted barbell upwards while lying flat on a bench.",
+                                            "xp": 140
+                                        },
+                                        {
+                                            "_id": "673b26e3656d6301098762b2",
+                                            "name": "Pull-ups",
+                                            "type": "Gym",
+                                            "difficulty_level": 3,
+                                            "target_muscle_group": "Back, Arms",
+                                            "duration_in_seconds": 40,
+                                            "description": "Pull your body up on a bar until your chin is above it.",
+                                            "xp": 120
+                                        },
+                                        {
+                                            "_id": "673b26e3656d6301098762b3",
+                                            "name": "Weighted Squats",
+                                            "type": "Gym",
+                                            "difficulty_level": 3,
+                                            "target_muscle_group": "Legs, Glutes",
+                                            "duration_in_seconds": 70,
+                                            "description": "Perform a squat while holding a weighted barbell across your shoulders.",
+                                            "xp": 160
+                                        }
+                                    ],
+                                    "total_duration": 220
+                                },
+                                {
+                                    "_id": "673b26e3656d6301098761e3",
+                                    "difficulty_level": 3,
+                                    "exercises": [
+                                        {
+                                            "_id": "673b26e3656d6301098762b1",
+                                            "name": "Bench Press",
+                                            "type": "Gym",
+                                            "difficulty_level": 3,
+                                            "target_muscle_group": "Chest, Arms",
+                                            "duration_in_seconds": 50,
+                                            "description": "Push a weighted barbell upwards while lying flat on a bench.",
+                                            "xp": 140
+                                        },
+                                        {
+                                            "_id": "673b26e3656d6301098762b2",
+                                            "name": "Pull-ups",
+                                            "type": "Gym",
+                                            "difficulty_level": 3,
+                                            "target_muscle_group": "Back, Arms",
+                                            "duration_in_seconds": 40,
+                                            "description": "Pull your body up on a bar until your chin is above it.",
+                                            "xp": 120
+                                        },
+                                        {
+                                            "_id": "673b26e3656d6301098762b4",
+                                            "name": "Overhead Press",
+                                            "type": "Gym",
+                                            "difficulty_level": 3,
+                                            "target_muscle_group": "Shoulders, Arms",
+                                            "duration_in_seconds": 50,
+                                            "description": "Press a weighted barbell upwards from your shoulders to overhead.",
+                                            "xp": 130
+                                        }
+                                    ],
+                                    "total_duration": 140
+                                }
+                            ]
+                        }
+                    ]
+                }
             }
         },
         "GET /api/users/:user_id": {
@@ -76,21 +239,51 @@
                     "_id": "673b26e3656d6301098761d2",
                     "name": "Charlie Davis",
                     "email": "charlie.davis@example.com",
-                    "age": 24,
-                    "height": 172,
-                    "weight": 70,
-                    "xp": 600,
+                    "age": 40,
+                    "height": 175,
+                    "weight": 68,
+                    "xp": 1000,
+                    "difficulty_level": 1,
                     "goals": [
-                        "Increase stamina",
-                        "Learn yoga"
+                        "Improve flexibility",
+                        "Stay active"
                     ],
                     "reminders": [
                         {
-                            "workout_id": "673b26e3656d6301098761e2",
-                            "reminder_time": "2024-11-20T06:00:00Z"
+                            "workout_id": "673b26e3656d6301098761e0",
+                            "reminder_time": "2024-11-21T10:00:00.000Z"
                         }
                     ],
-                    "image_url": "https://hips.hearstapps.com/hmg-prod/images/hlh070123feacover-004-hi-646d26d7015ef.jpg"
+                    "image_url": "https://hips.hearstapps.com/hmg-prod/images/hlh070123feacover-004-hi-646d26d7015ef.jpg",
+                    "workouts": [
+                        {
+                            "_id": "673b26e3656d6301098761e0",
+                            "difficulty_level": 1,
+                            "exercises": [
+                                {
+                                    "_id": "673b26e3656d6301098762a0",
+                                    "name": "Jumping Jacks",
+                                    "type": "Home",
+                                    "difficulty_level": 1,
+                                    "target_muscle_group": "Full Body",
+                                    "duration_in_seconds": 30,
+                                    "description": "Perform quick jumps while spreading and closing your legs and arms simultaneously.",
+                                    "xp": 50
+                                },
+                                {
+                                    "_id": "673b26e3656d6301098762a1",
+                                    "name": "Push-ups",
+                                    "type": "Home",
+                                    "difficulty_level": 1,
+                                    "target_muscle_group": "Chest, Arms",
+                                    "duration_in_seconds": 40,
+                                    "description": "Lower and raise your body while keeping your back straight and your arms bent at 90 degrees.",
+                                    "xp": 75
+                                }
+                            ],
+                            "total_duration": 70
+                        }
+                    ]
                 }
             }
         },
@@ -105,22 +298,52 @@
                     "_id": "673b26e3656d6301098761d2",
                     "name": "Charlie Davis",
                     "email": "charlie.davis@example.com",
-                    "age": 24,
-                    "height": 172,
-                    "weight": 70,
-                    "xp": 600,
+                    "age": 40,
+                    "height": 175,
+                    "weight": 68,
+                    "xp": 1000,
+                    "difficulty_level": 1,
                     "goals": [
-                        "Increase stamina",
-                        "Learn yoga",
+                        "Improve flexibility",
+                        "Stay active",
                         "Goal A"
                     ],
                     "reminders": [
                         {
-                            "workout_id": "673b26e3656d6301098761e2",
-                            "reminder_time": "2024-11-20T06:00:00Z"
+                            "workout_id": "673b26e3656d6301098761e0",
+                            "reminder_time": "2024-11-21T10:00:00.000Z"
                         }
                     ],
-                    "image_url": "https://hips.hearstapps.com/hmg-prod/images/hlh070123feacover-004-hi-646d26d7015ef.jpg"
+                    "image_url": "https://hips.hearstapps.com/hmg-prod/images/hlh070123feacover-004-hi-646d26d7015ef.jpg",
+                    "workouts": [
+                        {
+                            "_id": "673b26e3656d6301098761e0",
+                            "difficulty_level": 1,
+                            "exercises": [
+                                {
+                                    "_id": "673b26e3656d6301098762a0",
+                                    "name": "Jumping Jacks",
+                                    "type": "Home",
+                                    "difficulty_level": 1,
+                                    "target_muscle_group": "Full Body",
+                                    "duration_in_seconds": 30,
+                                    "description": "Perform quick jumps while spreading and closing your legs and arms simultaneously.",
+                                    "xp": 50
+                                },
+                                {
+                                    "_id": "673b26e3656d6301098762a1",
+                                    "name": "Push-ups",
+                                    "type": "Home",
+                                    "difficulty_level": 1,
+                                    "target_muscle_group": "Chest, Arms",
+                                    "duration_in_seconds": 40,
+                                    "description": "Lower and raise your body while keeping your back straight and your arms bent at 90 degrees.",
+                                    "xp": 75
+                                }
+                            ],
+                            "total_duration": 70
+                        }
+                    ]
                 }
             }
         }
