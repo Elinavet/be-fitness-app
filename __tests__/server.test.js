@@ -178,11 +178,11 @@ describe("/api/exercises/:exercise_id", () => {
     describe("GET", () => {
         test("200: Returns an exercise with the corresponding ID", () => {
             return request(app)
-            .get("/api/exercises/648d9f1a7a2d5b1f1e6d1232")
+            .get("/api/exercises/64ae9f1b7a2d5b1f1e6d3001")
             .expect(200)
             .then((response) => {
                 const exercise = response.body.exercise;
-                expect(exercise._id).toBe("648d9f1a7a2d5b1f1e6d1232");
+                expect(exercise._id).toBe("64ae9f1b7a2d5b1f1e6d3001");
                 expect(typeof exercise.name).toBe("string")
                 expect(typeof exercise.type).toBe("string")
                 expect(typeof exercise.target_muscle_group).toBe("string")
@@ -213,11 +213,11 @@ describe("/api/workouts/:workout_id", () => {
     describe("GET", () => {
         test("200: Returns a workout given the workout ID", () => {
             return request(app)
-            .get("/api/workouts/648d9f1a7a2d5b1f1e6d1237")
+            .get("/api/workouts/648d9f1a7a2d5b1f1e6d1240")
             .expect(200)
             .then((response) => {
                 const { workout } = response.body;
-                expect(workout._id).toBe("648d9f1a7a2d5b1f1e6d1237");
+                expect(workout._id).toBe("648d9f1a7a2d5b1f1e6d1240");
                 expect(typeof workout.level).toBe("number");
                 expect(typeof workout.total_duration).toBe("number");
                 expect(Array.isArray(workout.exercises)).toBe(true);

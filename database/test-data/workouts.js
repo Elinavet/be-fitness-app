@@ -2,7 +2,7 @@ const { ObjectId } = require("mongodb")
 
 const workouts = [
   {
-    _id: new ObjectId("648d9f1a7a2d5b1f1e6d1237"),
+    _id: new ObjectId("648d9f1a7a2d5b1f1e6d1240"),
     level: 1,
     exercise_names: ["Push-Ups", "Jumping Jacks", "Plank"],
   },

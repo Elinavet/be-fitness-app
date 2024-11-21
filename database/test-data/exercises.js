@@ -2,7 +2,7 @@ const { ObjectId } = require("mongodb")
 
 const exercises = [
   {
-    _id: new ObjectId("648d9f1a7a2d5b1f1e6d1231"),
+    _id: new ObjectId("64ae9f1b7a2d5b1f1e6d3001"),
     name: "Push-Ups",
     type: "Strength",
     target_muscle_group: "Chest",
@@ -11,7 +11,7 @@ const exercises = [
     xp: 50,
   },
   {
-    _id: new ObjectId("648d9f1a7a2d5b1f1e6d1232"),
+    _id: new ObjectId("64ae9f1b7a2d5b1f1e6d3002"),
     name: "Squats",
     type: "Strength",
     target_muscle_group: "Legs",
@@ -20,7 +20,7 @@ const exercises = [
     xp: 60,
   },
   {
-    _id: new ObjectId("648d9f1a7a2d5b1f1e6d1233"),
+    _id: new ObjectId("64ae9f1b7a2d5b1f1e6d3003"),
     name: "Plank",
     type: "Core",
     target_muscle_group: "Abs",
@@ -29,7 +29,7 @@ const exercises = [
     xp: 70,
   },
   {
-    _id: new ObjectId("648d9f1a7a2d5b1f1e6d1234"),
+    _id: new ObjectId("64ae9f1b7a2d5b1f1e6d3004"),
     name: "Jumping Jacks",
     type: "Cardio",
     target_muscle_group: "Full Body",
@@ -38,7 +38,7 @@ const exercises = [
     xp: 40,
   },
   {
-    _id: new ObjectId("648d9f1a7a2d5b1f1e6d1235"),
+    _id: new ObjectId("64ae9f1b7a2d5b1f1e6d3005"),
     name: "Bicep Curls",
     type: "Strength",
     target_muscle_group: "Arms",
@@ -47,7 +47,7 @@ const exercises = [
     xp: 65,
   },
   {
-    _id: new ObjectId("648d9f1a7a2d5b1f1e6d1236"),
+    _id: new ObjectId("64ae9f1b7a2d5b1f1e6d3006"),
     name: "Burpees",
     type: "Cardio",
     target_muscle_group: "Full Body",
@@ -56,7 +56,7 @@ const exercises = [
     xp: 80,
   },
   {
-    _id: new ObjectId("648d9f1a7a2d5b1f1e6d1237"),
+    _id: new ObjectId("64ae9f1b7a2d5b1f1e6d3007"),
     name: "Lunges",
     type: "Strength",
     target_muscle_group: "Legs",
@@ -65,7 +65,7 @@ const exercises = [
     xp: 70,
   },
   {
-    _id: new ObjectId("648d9f1a7a2d5b1f1e6d1238"),
+    _id: new ObjectId("64ae9f1b7a2d5b1f1e6d3008"),
     name: "Mountain Climbers",
     type: "Cardio",
     target_muscle_group: "Core",
@@ -74,7 +74,7 @@ const exercises = [
     xp: 60,
   },
   {
-    _id: new ObjectId("648d9f1a7a2d5b1f1e6d1239"),
+    _id: new ObjectId("64ae9f1b7a2d5b1f1e6d3009"),
     name: "Tricep Dips",
     type: "Strength",
     target_muscle_group: "Arms",
