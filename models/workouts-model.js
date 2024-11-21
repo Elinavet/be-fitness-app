@@ -36,14 +36,7 @@ function fetchWorkoutById(workoutId) {
         if(!workout) {
             return Promise.reject({status: 404, message: "Workout not found"});
         }
-        const promises = workout.exercise_ids.map((exerciseId) => {
-            return fetchExerciseById(exerciseId);
-        })
-        return Promise.all([Promise.all(promises), workout])
-    }).then(([exercises, workout]) => {
-        workout.exercises = exercises
-        delete workout.exercise_ids
-        return workout;
+        return workout
     })
 }
 
