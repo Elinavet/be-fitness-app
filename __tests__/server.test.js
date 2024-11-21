@@ -3,7 +3,6 @@ const seed = require("../database/seed.js")
 const { client, db } = require("../database/connection.js")
 const app = require("../app.js")
 const request = require("supertest")
-const { fetchWorkoutById } = require("../models/workouts-model.js")
 const endpoints = require("../endpoints.json")
 
 beforeEach(() => {
@@ -52,6 +51,14 @@ describe("/api/users", () => {
                         expect(reminder.constructor).toBe(Object)
                         expect(reminder).toHaveProperty("workout_id")
                         expect(typeof reminder.reminder_time).toBe("string")
+                    })
+                    expect(typeof user.image_url).toBe("string")
+                    expect(Array.isArray(user.workouts)).toBe(true)
+                    user.workouts.forEach((workout) => {
+                        expect(workout).toHaveProperty("_id")
+                        expect(typeof workout.difficulty_level).toBe("number")
+                        expect(Array.isArray(workout.exercises)).toBe(true)
+                        expect(typeof workout.total_duration).toBe("number")
                     })
                 })
             })
@@ -159,7 +166,7 @@ describe("/api/exercises", () => {
             .get("/api/exercises")
             .expect(200)
             .then((response) => {
-                expect(response.body.exercises.length).toBe(6)
+                expect(response.body.exercises.length).toBe(17)
                 response.body.exercises.forEach((exercise) => {
                 expect(exercise).toHaveProperty("_id");
                 expect(typeof exercise.exercise_name).toBe("string")
@@ -177,15 +184,16 @@ describe("/api/exercises/:exercise_id", () => {
     describe("GET", () => {
         test("200: Returns an exercise with the corresponding ID", () => {
             return request(app)
-            .get("/api/exercises/673b26e3656d6301098761ba")
+            .get("/api/exercises/673b26e3656d6301098762a0")
             .expect(200)
             .then((response) => {
                 const exercise = response.body.exercise;
-                expect(exercise._id).toBe("673b26e3656d6301098761ba");
+                expect(exercise._id).toBe("673b26e3656d6301098762a0");
                 expect(typeof exercise.exercise_name).toBe("string")
                 expect(typeof exercise.exercise_type).toBe("string")
                 expect(typeof exercise.difficulty_level).toBe("number")
                 expect(typeof exercise.target_muscle_group).toBe("string")
+                expect(typeof exercise.duration_in_seconds).toBe("number")
                 expect(typeof exercise.description).toBe("string")
             })
         })
@@ -218,9 +226,7 @@ describe("/api/workouts/:workout_id", () => {
                 const { workout } = response.body;
                 expect(workout._id).toBe("673b26e3656d6301098761e0");
                 expect(typeof workout.difficulty_level).toBe("number");
-                expect(typeof workout.date_completed).toBe("string");
                 expect(typeof workout.total_duration).toBe("number");
-                expect(typeof workout.xp_earned).toBe("number");
                 expect(Array.isArray(workout.exercises)).toBe(true);
                 workout.exercises.forEach((exercise) => {
                     expect(exercise).toHaveProperty("_id");
@@ -242,7 +248,7 @@ describe("/api/workouts/:workout_id", () => {
         })
         test("404: Responds with a not found message if workout does not exist", () => {
             return request(app)
-            .get("/api/workouts/673b26e3656d6301098761e4")
+            .get("/api/workouts/673b26e3656d6301098761e8")
             .expect(404)
             .then((response) => {
                 expect(response.body.message).toBe("Workout not found")
