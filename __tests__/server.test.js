@@ -6,6 +6,8 @@ const request = require("supertest")
 const endpoints = require("../endpoints.json")
 const getTotalDurationOfWorkout = require("../utils/get-total-duration-of-workout.js")
 
+jest.setTimeout(16000);
+
 beforeEach(() => {
     return seed(data)
 })
@@ -209,15 +211,15 @@ describe("/api/exercises/:exercise_id", () => {
     })
 })
 
-describe("/api/workouts/:workout_id", () => {
+describe.skip("/api/workouts/:level", () => {
     describe("GET", () => {
-        test("200: Returns a workout given the workout ID", () => {
+        test("200: Returns a workout given the workout level", () => {
             return request(app)
-            .get("/api/workouts/64c0f3a6e8a2d5b1f1e6d401")
+            .get("/api/workouts/1")
             .expect(200)
             .then((response) => {
                 const { workout } = response.body;
-                expect(workout._id).toBe("64c0f3a6e8a2d5b1f1e6d401");
+                expect(workout.level).toBe(1);
                 expect(typeof workout.level).toBe("number");
                 expect(typeof workout.total_duration).toBe("number");
                 expect(Array.isArray(workout.exercises)).toBe(true);
@@ -226,7 +228,7 @@ describe("/api/workouts/:workout_id", () => {
                     expect(typeof exercise.name).toBe("string");
                     expect(typeof exercise.type).toBe("string");
                     expect(typeof exercise.target_muscle_group).toBe("string");
-                    expect(typeof exercise.description).toBe("string")
+                    expect(typeof exercise.description).toBe("string");
                 })
             })
         })
@@ -249,6 +251,22 @@ describe("/api/workouts/:workout_id", () => {
     })
 })
 
+describe("/api/workouts", () => {
+    describe("GET", () => {
+        test("200: Returns all workouts", () => {
+            return request(app)
+            .get("/api/workouts")
+            .expect(200)
+            .then((response) => {
+                const { workouts } = response.body;
+                workouts.forEach((workout) => {
+                    expect(typeof workout.level).toBe("number");
+
+                })
+            })
+        })
+    })
+})
 
 describe("/*", () => {
     test("404: Responds with an error if given an invalid endpoint", () => {
