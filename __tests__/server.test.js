@@ -213,11 +213,11 @@ describe("/api/workouts/:workout_id", () => {
     describe("GET", () => {
         test("200: Returns a workout given the workout ID", () => {
             return request(app)
-            .get("/api/workouts/648d9f1a7a2d5b1f1e6d1240")
+            .get("/api/workouts/64c0f3a6e8a2d5b1f1e6d401")
             .expect(200)
             .then((response) => {
                 const { workout } = response.body;
-                expect(workout._id).toBe("648d9f1a7a2d5b1f1e6d1240");
+                expect(workout._id).toBe("64c0f3a6e8a2d5b1f1e6d401");
                 expect(typeof workout.level).toBe("number");
                 expect(typeof workout.total_duration).toBe("number");
                 expect(Array.isArray(workout.exercises)).toBe(true);
