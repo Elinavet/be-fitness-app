@@ -169,8 +169,8 @@ describe("/api/exercises", () => {
                 expect(response.body.exercises.length).toBe(17)
                 response.body.exercises.forEach((exercise) => {
                 expect(exercise).toHaveProperty("_id");
-                expect(typeof exercise.exercise_name).toBe("string")
-                expect(typeof exercise.exercise_type).toBe("string")
+                expect(typeof exercise.name).toBe("string")
+                expect(typeof exercise.type).toBe("string")
                 expect(typeof exercise.difficulty_level).toBe("number")
                 expect(typeof exercise.target_muscle_group).toBe("string")
                 expect(typeof exercise.description).toBe("string")
@@ -189,8 +189,8 @@ describe("/api/exercises/:exercise_id", () => {
             .then((response) => {
                 const exercise = response.body.exercise;
                 expect(exercise._id).toBe("673b26e3656d6301098762a0");
-                expect(typeof exercise.exercise_name).toBe("string")
-                expect(typeof exercise.exercise_type).toBe("string")
+                expect(typeof exercise.name).toBe("string")
+                expect(typeof exercise.type).toBe("string")
                 expect(typeof exercise.difficulty_level).toBe("number")
                 expect(typeof exercise.target_muscle_group).toBe("string")
                 expect(typeof exercise.duration_in_seconds).toBe("number")
@@ -230,8 +230,8 @@ describe("/api/workouts/:workout_id", () => {
                 expect(Array.isArray(workout.exercises)).toBe(true);
                 workout.exercises.forEach((exercise) => {
                     expect(exercise).toHaveProperty("_id");
-                    expect(typeof exercise.exercise_name).toBe("string");
-                    expect(typeof exercise.exercise_type).toBe("string");
+                    expect(typeof exercise.name).toBe("string");
+                    expect(typeof exercise.type).toBe("string");
                     expect(typeof exercise.difficulty_level).toBe("number");
                     expect(typeof exercise.target_muscle_group).toBe("string");
                     expect(typeof exercise.description).toBe("string")
