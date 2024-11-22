@@ -353,7 +353,7 @@ describe("/api/workouts", () => {
                 }
             });        
         });
-        test.skip("200: Responds with all workouts sorted in specified order, where order query is case insensitive", () => {
+        test("200: Responds with all workouts sorted in specified order, where order query is case insensitive", () => {
             return Promise.all(
                 [
                     request(app)
@@ -377,7 +377,7 @@ describe("/api/workouts", () => {
                 ]
             )
         })
-        test.skip("400: Responds with a bad request message when sort_by query is not valid (i.e. not total_duration or level)", () => {
+        test("400: Responds with a bad request message when sort_by query is not valid (i.e. not total_duration or level)", () => {
             return request(app)
             .get("/api/workouts?sort_by=invalid_sort_by")
             .expect(400)
@@ -385,7 +385,7 @@ describe("/api/workouts", () => {
                 expect(response.body.message).toBe("Invalid sort by")
             })
         })
-        test.skip("400: Responds with a bad request message when order query is not valid (i.e. not ASC or DESC)", () => {
+        test("400: Responds with a bad request message when order query is not valid (i.e. not ASC or DESC)", () => {
             return request(app)
             .get("/api/workouts?order=invalid_order")
             .expect(400)
