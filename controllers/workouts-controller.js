@@ -2,7 +2,8 @@ const { fetchWorkoutByLevel, fetchAllWorkouts } = require("../models/workouts-mo
 
 
 function getAllWorkouts(request, response, next) {
-    fetchAllWorkouts().then((workouts) => {
+    const { sort_by = "level", order = "ASC"} = request.query;
+    fetchAllWorkouts(sort_by, order).then((workouts) => {
         response.status(200).send({workouts});
     }).catch((err) => {
         next(err)

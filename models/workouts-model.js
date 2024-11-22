@@ -2,11 +2,19 @@ const { ObjectId } = require("mongodb");
 const { client, db } = require("../database/connection.js");
 const workoutsDb = db.collection("workouts");
 
-function fetchAllWorkouts(){
+function fetchAllWorkouts(sort_by = "level", order = "ASC"){
+    const validCols = ["total_duration", "level"]
+    const validOrder = ["ASC", "DESC"]
+
+    if (!validCols.includes(sort_by)) sort_by = "level";
+    if (!validOrder.includes(order)) order = "ASC"; 
+
     return client.connect().then(() => {
-        return workoutsDb.find({}, {$sort: {level: 1}}).toArray()
+        return workoutsDb.aggregate([
+            { $sort: { [sort_by]: order === "DESC" ? -1 : 1 }}
+        ]).toArray()
     }).then((workouts) => {
-        return workouts
+        return workouts;
     })
 }
 

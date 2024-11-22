@@ -5,6 +5,7 @@ const app = require("../app.js")
 const request = require("supertest")
 const endpoints = require("../endpoints.json")
 
+
 jest.setTimeout(16000);
 
 beforeEach(() => {
@@ -327,12 +328,33 @@ describe("/api/workouts", () => {
                 const { workouts } = response.body;
                 workouts.forEach((workout) => {
                     expect(typeof workout.level).toBe("number");
-
-                })
-            })
-        })
-    })
-})
+                });
+            });
+        });
+        test('200: all workouts sorted by level', () => {
+            return request(app)
+            .get("/api/workouts")
+            .expect(200)
+              .then(({ body }) => {
+                const workouts = body.workouts;
+                for (let i = 1; i < workouts.length; i++) {
+                    expect(workouts[i - 1].level).toBeLessThanOrEqual(workouts[i].level);
+                }
+            });
+        });
+        test("should sort workouts by total_duration in descending order", () => {
+            return request(app)
+              .get("/api/workouts?sort_by=total_duration&order=DESC")
+              .expect(200)
+              .then(({ body }) => {
+                const workouts = body.workouts;
+                for (let i = 1; i < workouts.length; i++) {
+                    expect(workouts[i - 1].total_duration).toBeGreaterThanOrEqual(workouts[i].total_duration);
+                }
+            });        
+        });
+    });
+});
 
 describe("/*", () => {
     test("404: Responds with an error if given an invalid endpoint", () => {
@@ -341,7 +363,7 @@ describe("/*", () => {
         .expect(404)
         .then((response) => {
             expect(response.body.message).toBe("Endpoint not found")
-        })
-    })
-})
+        });
+    });
+});
 
