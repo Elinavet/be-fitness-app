@@ -302,6 +302,46 @@
                     }
                 ]
             }
+        },
+        "GET /api/workouts/:level": {
+            "description": "Returns a workout given its level",
+            "exampleRequest": "GET /api/workouts/1",
+            "exampleResponse": {
+                "workout": {
+                    "_id": "673f4bb48958f2f4ae53320e",
+                    "level": 1,
+                    "exercises": [
+                        {
+                            "_id": "673f4bb48958f2f4ae533205",
+                            "name": "Push-Ups",
+                            "type": "Strength",
+                            "target_muscle_group": "Chest",
+                            "duration_in_seconds": 30,
+                            "description": "A bodyweight exercise to strengthen the chest, shoulders, and triceps.",
+                            "xp": 50
+                        },
+                        {
+                            "_id": "673f4bb48958f2f4ae533208",
+                            "name": "Jumping Jacks",
+                            "type": "Cardio",
+                            "target_muscle_group": "Full Body",
+                            "duration_in_seconds": 45,
+                            "description": "A cardio exercise to improve endurance and warm up the body.",
+                            "xp": 40
+                        },
+                        {
+                            "_id": "673f4bb48958f2f4ae533207",
+                            "name": "Plank",
+                            "type": "Core",
+                            "target_muscle_group": "Abs",
+                            "duration_in_seconds": 60,
+                            "description": "Hold your body in a straight line while supporting your weight on your forearms and toes.",
+                            "xp": 70
+                        }
+                    ],
+                    "total_duration": 135
+                }
+            }
         }
     }
 }
