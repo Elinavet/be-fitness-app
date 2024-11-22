@@ -6,6 +6,7 @@ const request = require("supertest")
 const endpoints = require("../endpoints.json")
 require("jest-sorted")
 
+
 jest.setTimeout(16000);
 
 beforeEach(() => {
@@ -338,12 +339,73 @@ describe("/api/workouts", () => {
                 const { workouts } = response.body;
                 workouts.forEach((workout) => {
                     expect(typeof workout.level).toBe("number");
-
-                })
+                });
+            });
+        });
+        test('200: All workouts sorted by level by default', () => {
+            return request(app)
+            .get("/api/workouts")
+            .expect(200)
+              .then(({ body }) => {
+                const workouts = body.workouts;
+                for (let i = 1; i < workouts.length; i++) {
+                    expect(workouts[i - 1].level).toBeLessThanOrEqual(workouts[i].level);
+                }
+            });
+        });
+        test("200: Should sort workouts by total_duration in descending order when given the corresponding queries", () => {
+            return request(app)
+              .get("/api/workouts?sort_by=total_duration&order=DESC")
+              .expect(200)
+              .then(({ body }) => {
+                const workouts = body.workouts;
+                for (let i = 1; i < workouts.length; i++) {
+                    expect(workouts[i - 1].total_duration).toBeGreaterThanOrEqual(workouts[i].total_duration);
+                }
+            });        
+        });
+        test("200: Responds with all workouts sorted in specified order, where order query is case insensitive", () => {
+            return Promise.all(
+                [
+                    request(app)
+                    .get("/api/workouts?order=desc")
+                    .expect(200)
+                    .then((response) => {
+                        const {workouts} = response.body
+                        for (let i = 1; i < workouts.length; i++) {
+                            expect(workouts[i - 1].level).toBeGreaterThanOrEqual(workouts[i].level);
+                        }
+                    }),
+                    request(app)
+                    .get("/api/workouts?sort_by=total_duration&order=aSc")    
+                    .expect(200)
+                    .then((response) => {
+                        const {workouts} = response.body
+                        for (let i = 1; i < workouts.length; i++) {
+                            expect(workouts[i - 1].total_duration).toBeLessThanOrEqual(workouts[i].total_duration);
+                        }
+                    })
+                ]
+            )
+        })
+        test("400: Responds with a bad request message when sort_by query is not valid (i.e. not total_duration or level)", () => {
+            return request(app)
+            .get("/api/workouts?sort_by=invalid_sort_by")
+            .expect(400)
+            .then((response) => {
+                expect(response.body.message).toBe("Invalid sort by")
             })
         })
-    })
-})
+        test("400: Responds with a bad request message when order query is not valid (i.e. not ASC or DESC)", () => {
+            return request(app)
+            .get("/api/workouts?order=invalid_order")
+            .expect(400)
+            .then((response) => {
+                expect(response.body.message).toBe("Invalid order")
+            })
+        })
+    });
+});
 
 describe("/*", () => {
     test("404: Responds with an error if given an invalid endpoint", () => {
@@ -352,7 +414,7 @@ describe("/*", () => {
         .expect(404)
         .then((response) => {
             expect(response.body.message).toBe("Endpoint not found")
-        })
-    })
-})
+        });
+    });
+});
 

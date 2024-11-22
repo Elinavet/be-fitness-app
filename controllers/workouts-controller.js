@@ -2,7 +2,7 @@ const { fetchWorkoutByLevel, fetchAllWorkouts } = require("../models/workouts-mo
 
 
 function getAllWorkouts(request, response, next) {
-    fetchAllWorkouts().then((workouts) => {
+    fetchAllWorkouts(request.query).then((workouts) => {
         response.status(200).send({workouts});
     }).catch((err) => {
         next(err)
