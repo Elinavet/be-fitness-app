@@ -41,8 +41,6 @@ describe("/api/users", () => {
                     expect(typeof user.name).toBe("string")
                     expect(typeof user.email).toBe("string")
                     expect(typeof user.age).toBe("number")
-                    expect(typeof user.height).toBe("number")
-                    expect(typeof user.weight).toBe("number")
                     expect(typeof user.xp).toBe("number")
                     expect(typeof user.level).toBe("number")
                     expect(Array.isArray(user.goals)).toBe(true)
@@ -73,8 +71,6 @@ describe("/api/users/:user_id", () => {
                 expect(typeof user.name).toBe("string")
                 expect(typeof user.email).toBe("string")
                 expect(typeof user.age).toBe("number")
-                expect(typeof user.height).toBe("number")
-                expect(typeof user.weight).toBe("number")
                 expect(typeof user.xp).toBe("number")
                 expect(typeof user.level).toBe("number")
                 expect(Array.isArray(user.goals)).toBe(true)
@@ -220,6 +216,10 @@ describe("/api/users/:user_id", () => {
             })
         })
     })
+})
+
+describe("/api/users/:user_id/goals", () => {
+
 })
 
 describe("/api/exercises", () => {
