@@ -1,7 +1,7 @@
 {
     "users": {
         "GET /api/users": {
-            "description": "Returns an array of object representations of users",
+            "description": "Returns an array of object representations of users (sorted by level in ascending order)",
             "exampleRequest": "GET /api/users",
             "exampleResponse": {
                 "users": [
