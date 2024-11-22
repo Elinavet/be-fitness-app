@@ -126,38 +126,59 @@
             "description": "Adds a new goal to user goals array (NOTE: This is currently a work-in-progress. As of now, level_increment doesn't work, so it only works when provided with a goal.)",
             "exampleRequest": "PATCH /api/users/673f41e3f6e7ff753e12833e",
             "exampleRequestBody": {
-                "goal": "Goal A",
+                "remove_goal": "Build core strength",
+                "add_goal": "Goal A",
                 "level_increment": 1
+            },
+            "userBeforePatch": {
+                "_id": "673f41e3f6e7ff753e12833e",
+                "name": "Alice Johnson",
+                "email": "alice.johnson@example.com",
+                "age": 29,
+                "height": 165,
+                "weight": 68,
+                "xp": 120,
+                "level": 1,
+                "goals": [
+                    "Lose weight",
+                    "Goal A"
+                ],
+                "reminders": [
+                    {
+                        "reminder_time": "2024-11-22T08:00:00.000Z",
+                        "message": "Complete level 2 today!"
+                    }
+                ],
+                "image_url": "https://hips.hearstapps.com/hmg-prod/images/hlh070123feacover-004-hi-646d26d7015ef.jpg"
             },
             "exampleResponse": {
                 "user": {
-                    "user": {
-                        "_id": "673f41e3f6e7ff753e12833e",
-                        "name": "Alice Johnson",
-                        "email": "alice.johnson@example.com",
-                        "age": 29,
-                        "height": 165,
-                        "weight": 68,
-                        "xp": 120,
-                        "level": 1,
-                        "goals": [
-                            "Lose weight",
-                            "Build core strength"
-                        ],
-                        "reminders": [
-                            {
-                                "reminder_time": "2024-11-22T08:00:00.000Z",
-                                "message": "Complete level 2 today!"
-                            }
-                        ],
-                        "workout_log": [
-                            {
-                                "level": 1,
-                                "date_completed": "2024-11-21T08:00:00.000Z"
-                            }
-                        ],
-                        "image_url": "https://hips.hearstapps.com/hmg-prod/images/hlh070123feacover-004-hi-646d26d7015ef.jpg"
-                    }
+                    "_id": "673f41e3f6e7ff753e12833e",
+                    "name": "Alice Johnson",
+                    "email": "alice.johnson@example.com",
+                    "age": 29,
+                    "height": 165,
+                    "weight": 68,
+                    "xp": 120,
+                    "level": 2,
+                    "goals": [
+                        "Lose weight",
+                        "Build core strength",
+                        "Goal A"
+                    ],
+                    "reminders": [
+                        {
+                            "reminder_time": "2024-11-22T08:00:00.000Z",
+                            "message": "Complete level 2 today!"
+                        }
+                    ],
+                    "workout_log": [
+                        {
+                            "level": 1,
+                            "date_completed": "2024-11-21T08:00:00.000Z"
+                        }
+                    ],
+                    "image_url": "https://hips.hearstapps.com/hmg-prod/images/hlh070123feacover-004-hi-646d26d7015ef.jpg"
                 }
             }
         }
