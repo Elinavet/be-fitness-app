@@ -2,16 +2,21 @@ const {client, db} = require("../database/connection.js")
 const { ObjectId } = require("mongodb")
 const usersDb = db.collection("users")
 
-function fetchAllUsers(){
+function fetchAllUsers(queries){
+    /*const validQueries = ["sort_by", "order"]
+    if(!Object.keys(queries).includes(validQueries)){
+        return Promise.reject({status: 400, message: "One or more queries are invalid"})
+    }*/
+    const querySettings = {}
     return client.connect().then(() => {
-        return usersDb.find({}).toArray()
+        return usersDb.find({}).sort({xp: -1}).toArray()
     }).then((users) => {
         return users
     })
     
 }
 
-function fetchUserById(userId){
+function fetchUserById(userId, queries){
     return client.connect().then(() => {
         return usersDb.findOne({_id: new ObjectId(userId)})
     }).then((user) => {
