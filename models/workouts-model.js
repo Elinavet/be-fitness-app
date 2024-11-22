@@ -4,7 +4,7 @@ const workoutsDb = db.collection("workouts");
 
 function fetchAllWorkouts(){
     return client.connect().then(() => {
-        return workoutsDb.find({}).toArray()
+        return workoutsDb.find({}, {$sort: {level: 1}}).toArray()
     }).then((workouts) => {
         return workouts
     })
