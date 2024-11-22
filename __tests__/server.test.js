@@ -107,8 +107,8 @@ describe("/api/users/:user_id", () => {
             })
         })
     })
-    describe.only("PATCH", () => {
-        test("200: Adds a goal to the goal array when given a valid goal property", () => {
+    describe("PATCH", () => {
+        test("200: Adds a goal to the goals array when given a valid goal property", () => {
             return request(app)
             .patch("/api/users/648d9f1a7a2d5b1f1e6d1235")
             .send({add_goal: "Goal 3"})
@@ -131,6 +131,16 @@ describe("/api/users/:user_id", () => {
                 expect(user.workout_log.length).toBe(3)
             })
         })
+        test("200: Removes a goal from the goals array when given a goal to remove", () => {
+            return request(app)
+            .patch("/api/users/648d9f1a7a2d5b1f1e6d1234")
+            .send({remove_goal: "Build core strength"})
+            .then((response) => {
+                const {user} = response.body
+                expect(user._id).toBe("648d9f1a7a2d5b1f1e6d1234")
+                expect(user.goals).not.toEqual(expect.arrayContaining(["Build core strength"]))
+            })
+        })
         test("200: Ignores any extra keys on object being sent", () => {
             return request(app)
             .patch("/api/users/648d9f1a7a2d5b1f1e6d1235")
@@ -140,6 +150,47 @@ describe("/api/users/:user_id", () => {
                 const {user} = response.body
                 expect(user._id).toBe("648d9f1a7a2d5b1f1e6d1235")
                 expect(user.goals).toEqual(expect.arrayContaining(["Goal 3"]))
+            })
+        })
+        test("200: Each property has no affect on other ones", () => {
+            return request(app)
+            .patch("/api/users/648d9f1a7a2d5b1f1e6d1235")
+            .send({remove_goal: "Improve stamina", add_goal: "New goal"})
+            .expect(200)
+            .then((response) => {
+                const {user} = response.body
+                expect(user._id).toBe("648d9f1a7a2d5b1f1e6d1235")
+                expect(user.goals).toEqual(expect.arrayContaining(["New goal"]))
+                expect(user.goals).not.toEqual(expect.arrayContaining(["Improve stamina"]))
+                expect(!!user.goals).toBe(true)
+
+            })
+        })
+        test("400: Responds with a bad request message when trying to add a goal that already exists", () => {
+            return request(app)
+            .patch("/api/users/648d9f1a7a2d5b1f1e6d1236")
+            .send({add_goal: "Run a marathon"})
+            .expect(400)
+            .then((response) => {
+                expect(response.body.message).toBe("Goal already exists")
+            })
+        })
+        test("404: Responds with a not found message when trying to remove a goal that does not exist", () => {
+            return request(app)
+            .patch("/api/users/648d9f1a7a2d5b1f1e6d1234")
+            .send({remove_goal: "Nonexistent goal"})
+            .expect(404)
+            .then((response) => {
+                expect(response.body.message).toBe("Goal not found")
+            })
+        })
+        test("400: Responds with a bad request message when level_increment causes level to be less than 1", () => {
+            return request(app)
+            .patch("/api/users/648d9f1a7a2d5b1f1e6d1234")
+            .send({level_increment: -1})
+            .expect(400)
+            .then((response) => {
+                expect(response.body.message).toBe("User's level cannot be decremented any further")
             })
         })
         test("400: Responds with a bad request message when given an invalid ID", () => {
