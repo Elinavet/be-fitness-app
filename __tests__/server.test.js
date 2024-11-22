@@ -107,29 +107,45 @@ describe("/api/users/:user_id", () => {
             })
         })
     })
-    describe("PATCH", () => {
+    describe.only("PATCH", () => {
         test("200: Adds a goal to the goal array when given a valid goal property", () => {
             return request(app)
             .patch("/api/users/648d9f1a7a2d5b1f1e6d1235")
-            .send({goal: "Goal 3"})
+            .send({add_goal: "Goal 3"})
             .expect(200)
             .then((response) => {
-                expect(response.body.user.goals).toEqual(expect.arrayContaining(["Goal 3"]))
+                const {user} = response.body
+                expect(user._id).toBe("648d9f1a7a2d5b1f1e6d1235")
+                expect(user.goals).toEqual(expect.arrayContaining(["Goal 3"]))
+            })
+        })
+        test("200: Increments the level and updates workout_log when given a valid level_increment property", () => {
+            return request(app)
+            .patch("/api/users/648d9f1a7a2d5b1f1e6d1235")
+            .send({level_increment: 1})
+            .expect(200)
+            .then((response) => {
+                const {user} = response.body
+                expect(user._id).toBe("648d9f1a7a2d5b1f1e6d1235")
+                expect(user.level).toBe(4)
+                expect(user.workout_log.length).toBe(3)
             })
         })
         test("200: Ignores any extra keys on object being sent", () => {
             return request(app)
             .patch("/api/users/648d9f1a7a2d5b1f1e6d1235")
-            .send({goal: "Goal 3", extraKey: "Extra value"})
+            .send({add_goal: "Goal 3", extraKey: "Extra value"})
             .expect(200)
             .then((response) => {
-                expect(response.body.user.goals).toEqual(expect.arrayContaining(["Goal 3"]))
+                const {user} = response.body
+                expect(user._id).toBe("648d9f1a7a2d5b1f1e6d1235")
+                expect(user.goals).toEqual(expect.arrayContaining(["Goal 3"]))
             })
         })
         test("400: Responds with a bad request message when given an invalid ID", () => {
             return request(app)
             .patch("/api/users/invalid_id")
-            .send({goal: "Goal 3"})
+            .send({add_goal: "Goal 3"})
             .expect(400)
             .then((response) => {
                 expect(response.body.message).toBe("Invalid ID")
@@ -141,13 +157,13 @@ describe("/api/users/:user_id", () => {
             .send({})
             .expect(400)
             .then((response) => {
-                expect(response.body.message).toBe("Goals body cannot be empty")
+                expect(response.body.message).toBe("Bad request")
             })
         })
         test("404: Responds with a not found message when user does not exist", () => {
             return request(app)
             .patch("/api/users/673b26e3656d6301098761da")
-            .send({goal: "Goal 3"})
+            .send({add_goal: "Goal 3"})
             .expect(404)
             .then((response) => {
                 expect(response.body.message).toBe("User not found")

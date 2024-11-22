@@ -23,8 +23,14 @@ function fetchUserById(userId){
 }
 
 function updateUser(userId, propertiesToUpdate){
-    if (!propertiesToUpdate.goal) {
-        return Promise.reject({status: 400, message: "Goals body cannot be empty"})
+    const validKeys = ["add_goal", "level_increment"]
+    for(const key of Object.keys(propertiesToUpdate)){
+        if(!validKeys.includes(key)){
+            delete propertiesToUpdate.key
+        }
+    }
+    if(Object.values(propertiesToUpdate).length === 0){
+        return Promise.reject({status: 400, message: "Bad request"})
     }
     return client.connect().then(() => {
         return usersDb.findOne({_id: new ObjectId(userId)})
@@ -32,8 +38,23 @@ function updateUser(userId, propertiesToUpdate){
         if(!user){
             return Promise.reject({status: 404, message: "User not found"})
         }
-        user.goals.push(propertiesToUpdate.goal)
-        return usersDb.findOneAndUpdate({_id: new ObjectId(userId)}, {$set: {goals: user.goals}}, {returnDocument: "after"})
+
+        user.goals.push(propertiesToUpdate.add_goal)
+
+        if(!user.workout_log){
+            user.workout_log = [{level: user.level, date_completed: new Date()}]
+        } else {
+            user.workout_log.push([{level: user.level, date_completed: new Date()}])
+        }
+
+        return usersDb.findOneAndUpdate(
+            {_id: new ObjectId(userId)}, 
+            {$set: {
+                goals: user.goals,
+                level: user.level + propertiesToUpdate.level_increment,
+                workout_log: user.workout_log
+            }}, 
+            {returnDocument: "after"})
     }).then((user) => {
         return user
     })
