@@ -123,7 +123,7 @@
             }
         },
         "PATCH /api/users/:user_id": {
-            "description": "Adds a new goal to user goals array (NOTE: This is currently a work-in-progress. As of now, level_increment doesn't work, so it only works when provided with a goal.)",
+            "description": "Adds a new goal to user goals array",
             "exampleRequest": "PATCH /api/users/673f41e3f6e7ff753e12833e",
             "exampleRequestBody": {
                 "remove_goal": "Build core strength",
