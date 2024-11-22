@@ -134,11 +134,11 @@ describe("/api/users/:user_id", () => {
         test("200: Removes a goal from the goals array when given a goal to remove", () => {
             return request(app)
             .patch("/api/users/648d9f1a7a2d5b1f1e6d1234")
-            .send({remove_goal: "Build core strength"})
+            .send({remove_goal: "Lose weight"})
             .then((response) => {
                 const {user} = response.body
                 expect(user._id).toBe("648d9f1a7a2d5b1f1e6d1234")
-                expect(user.goals).not.toEqual(expect.arrayContaining(["Build core strength"]))
+                expect(user.goals).not.toEqual(expect.arrayContaining(["Lose weight"]))
             })
         })
         test("200: Ignores any extra keys on object being sent", () => {
