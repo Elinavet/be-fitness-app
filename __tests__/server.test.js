@@ -211,7 +211,7 @@ describe("/api/exercises/:exercise_id", () => {
     })
 })
 
-describe.skip("/api/workouts/:level", () => {
+describe("/api/workouts/:level", () => {
     describe("GET", () => {
         test("200: Returns a workout given the workout level", () => {
             return request(app)
@@ -232,17 +232,17 @@ describe.skip("/api/workouts/:level", () => {
                 })
             })
         })
-        test("400: Responds with a bad request message if ID is invalid", () => {
+        test.skip("400: Responds with a bad request message if workout level is invalid", () => {
             return request(app)
-            .get("/api/workouts/out_id")
+            .get("/api/workouts/wrongLvl")
             .expect(400)
             .then((response) => {
-                expect(response.body.message).toBe("Invalid ID")
+                expect(response.body.message).toBe("Invalid query")
             })
         })
         test("404: Responds with a not found message if workout does not exist", () => {
             return request(app)
-            .get("/api/workouts/673b26e3656d6301098761e8")
+            .get("/api/workouts/44333")
             .expect(404)
             .then((response) => {
                 expect(response.body.message).toBe("Workout not found")

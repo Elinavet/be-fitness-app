@@ -13,13 +13,15 @@ function fetchAllWorkouts(){
 
 function fetchWorkoutByLevel(workoutLevel) {
     return client.connect().then(() => {
-        return workoutsDb.findOne({level: workoutLevel});
+        return workoutsDb.findOne({level: +(workoutLevel)});
     }).then((workout) => {
+        
         if(!workout) {
             return Promise.reject({status: 404, message: "Workout not found"});
         }
-        return workout
+        return workout;
     })
+
 }
 
 
