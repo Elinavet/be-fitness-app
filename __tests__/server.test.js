@@ -4,7 +4,6 @@ const { client, db } = require("../database/connection.js")
 const app = require("../app.js")
 const request = require("supertest")
 const endpoints = require("../endpoints.json")
-const getTotalDurationOfWorkout = require("../utils/get-total-duration-of-workout.js")
 
 jest.setTimeout(16000);
 
@@ -232,12 +231,12 @@ describe("/api/workouts/:level", () => {
                 })
             })
         })
-        test.skip("400: Responds with a bad request message if workout level is invalid", () => {
+        test("400: Responds with a bad request message if workout level is invalid", () => {
             return request(app)
             .get("/api/workouts/wrongLvl")
             .expect(400)
             .then((response) => {
-                expect(response.body.message).toBe("Invalid query")
+                expect(response.body.message).toBe("Invalid level")
             })
         })
         test("404: Responds with a not found message if workout does not exist", () => {

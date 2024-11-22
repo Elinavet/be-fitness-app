@@ -13,9 +13,6 @@ function getAllWorkouts(request, response, next) {
 function getWorkoutByLevel(request, response, next) {
     const { level } = request.params;
     fetchWorkoutByLevel(level).then((workout) => {
-        if (isNaN(level)) {
-            return response.status(400).send({ message: "Invalid query" });
-        }
         response.status(200).send({workout})
     }).catch((err) => {
         next(err);
