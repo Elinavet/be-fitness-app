@@ -12,14 +12,18 @@ function fetchAllWorkouts(){
 
 
 function fetchWorkoutByLevel(workoutLevel) {
+    if (isNaN(workoutLevel)) {
+        return Promise.reject({status: 400, message: "Invalid level"})
+    }
     return client.connect().then(() => {
-        return workoutsDb.findOne({level: workoutLevel});
+        return workoutsDb.findOne({level: parseInt(workoutLevel)});
     }).then((workout) => {
         if(!workout) {
             return Promise.reject({status: 404, message: "Workout not found"});
         }
-        return workout
+        return workout;
     })
+
 }
 
 
