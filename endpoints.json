@@ -1,7 +1,7 @@
 {
     "users": {
         "GET /api/users": {
-            "description": "Returns an array of object representations of users",
+            "description": "Returns an array of object representations of users (sorted by level in ascending order)",
             "exampleRequest": "GET /api/users",
             "exampleResponse": {
                 "users": [
@@ -180,6 +180,127 @@
                     ],
                     "image_url": "https://hips.hearstapps.com/hmg-prod/images/hlh070123feacover-004-hi-646d26d7015ef.jpg"
                 }
+            }
+        }
+    },
+    "workouts": {
+        "GET /api/workouts": {
+            "description": "Returns an array of all workouts",
+            "exampleRequest": "GET /api/workouts",
+            "exampleResponse": {
+                "workouts": [
+                    {
+                        "_id": "673f4bb48958f2f4ae53320e",
+                        "level": 1,
+                        "exercises": [
+                            {
+                                "_id": "673f4bb48958f2f4ae533205",
+                                "name": "Push-Ups",
+                                "type": "Strength",
+                                "target_muscle_group": "Chest",
+                                "duration_in_seconds": 30,
+                                "description": "A bodyweight exercise to strengthen the chest, shoulders, and triceps.",
+                                "xp": 50
+                            },
+                            {
+                                "_id": "673f4bb48958f2f4ae533208",
+                                "name": "Jumping Jacks",
+                                "type": "Cardio",
+                                "target_muscle_group": "Full Body",
+                                "duration_in_seconds": 45,
+                                "description": "A cardio exercise to improve endurance and warm up the body.",
+                                "xp": 40
+                            },
+                            {
+                                "_id": "673f4bb48958f2f4ae533207",
+                                "name": "Plank",
+                                "type": "Core",
+                                "target_muscle_group": "Abs",
+                                "duration_in_seconds": 60,
+                                "description": "Hold your body in a straight line while supporting your weight on your forearms and toes.",
+                                "xp": 70
+                            }
+                        ],
+                        "total_duration": 135
+                    },
+                    {
+                        "_id": "673f4bb48958f2f4ae53320f",
+                        "level": 2,
+                        "exercises": [
+                            {
+                                "_id": "673f4bb48958f2f4ae533206",
+                                "name": "Squats",
+                                "type": "Strength",
+                                "target_muscle_group": "Legs",
+                                "duration_in_seconds": 40,
+                                "description": "A lower body exercise that targets quads, hamstrings, and glutes.",
+                                "xp": 60
+                            },
+                            {
+                                "_id": "673f4bb48958f2f4ae533207",
+                                "name": "Plank",
+                                "type": "Core",
+                                "target_muscle_group": "Abs",
+                                "duration_in_seconds": 60,
+                                "description": "Hold your body in a straight line while supporting your weight on your forearms and toes.",
+                                "xp": 70
+                            },
+                            {
+                                "_id": "673f4bb48958f2f4ae53320c",
+                                "name": "Mountain Climbers",
+                                "type": "Cardio",
+                                "target_muscle_group": "Core",
+                                "duration_in_seconds": 40,
+                                "description": "A cardio exercise that engages your core and improves agility.",
+                                "xp": 60
+                            }
+                        ],
+                        "total_duration": 140
+                    },
+                    {
+                        "_id": "673f4bb48958f2f4ae533210",
+                        "level": 3,
+                        "exercises": [
+                            {
+                                "_id": "673f4bb48958f2f4ae53320a",
+                                "name": "Burpees",
+                                "type": "Cardio",
+                                "target_muscle_group": "Full Body",
+                                "duration_in_seconds": 60,
+                                "description": "A high-intensity full-body exercise for endurance and strength.",
+                                "xp": 80
+                            },
+                            {
+                                "_id": "673f4bb48958f2f4ae53320b",
+                                "name": "Lunges",
+                                "type": "Strength",
+                                "target_muscle_group": "Legs",
+                                "duration_in_seconds": 50,
+                                "description": "A single-leg exercise to strengthen quads, hamstrings, and glutes.",
+                                "xp": 70
+                            },
+                            {
+                                "_id": "673f4bb48958f2f4ae533205",
+                                "name": "Push-Ups",
+                                "type": "Strength",
+                                "target_muscle_group": "Chest",
+                                "duration_in_seconds": 30,
+                                "description": "A bodyweight exercise to strengthen the chest, shoulders, and triceps.",
+                                "xp": 50
+                            },
+                            {
+                                "_id": "673f4bb48958f2f4ae533208",
+                                "name": "Jumping Jacks",
+                                "type": "Cardio",
+                                "target_muscle_group": "Full Body",
+                                "duration_in_seconds": 45,
+                                "description": "A cardio exercise to improve endurance and warm up the body.",
+                                "xp": 40
+                            }
+                        ],
+                        "total_duration": 185
+                    }
+                ]
             }
         }
     }
