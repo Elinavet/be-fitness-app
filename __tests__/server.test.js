@@ -4,6 +4,7 @@ const { client, db } = require("../database/connection.js")
 const app = require("../app.js")
 const request = require("supertest")
 const endpoints = require("../endpoints.json")
+require("jest-sorted")
 
 jest.setTimeout(16000);
 
@@ -53,6 +54,16 @@ describe("/api/users", () => {
                         expect(typeof reminder.reminder_time).toBe("string")
                     })
                     expect(typeof user.image_url).toBe("string")
+                })
+            })
+        })
+        describe("Queries", () => {
+            test("200: Responds with an array of users sorted by XP in descending order when given a sort_by of xp", () => {
+                return request(app)
+                .get("/api/users?sort_by=xp")
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.users).toBeSortedBy("xp", {descending: true})
                 })
             })
         })
