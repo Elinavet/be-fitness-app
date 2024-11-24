@@ -5,6 +5,8 @@ require("dotenv").config({
 })
 const uri = process.env.DATABASE_URI
 
+console.log(uri)
+
 if (!process.env.DATABASE_URI) {
   throw new Error('DATABASE_URI not set');
 }
