@@ -67,7 +67,7 @@ function seed({users, exercises, workouts}){
         return Promise.all(promises)
     })
     .catch((err) => {
-        console.log(err)
+        return err
     })
 }
 
