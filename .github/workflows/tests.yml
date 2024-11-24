@@ -29,7 +29,8 @@ jobs:
     - run: npm ci
     - run: npm run build --if-present
     - run: |
-          touch .env
+          touch .env.connection
           echo "${{secrets.DATABASE_URI}}" >> .env.connection
+          touch .env.test
           echo "${{secrets.DATABASE_NAME}}" >> .env.test
     - run: npm test

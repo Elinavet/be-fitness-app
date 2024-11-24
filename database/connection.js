@@ -28,9 +28,6 @@ if (!process.env.DATABASE_NAME) {
   throw new Error('DATABASE_NAME not set');
 }
 
-console.log(process.env.DATABASE_URI) //seriously, remember to delete this after testing!
-console.log(process.env.DATABASE_NAME)
-
 const db = client.db(process.env.DATABASE_NAME)
 
 module.exports = {db, client}
