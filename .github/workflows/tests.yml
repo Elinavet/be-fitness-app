@@ -27,12 +27,10 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
+    - run: echo ${{ secrets.DATABASE_URI }}
     - run: |
           touch .env.connection
-          echo "${{secrets.DATABASE_URI}}" >> .env.connection
+          echo "${{ secrets.DATABASE_URI }}" >> .env.connection
           touch .env.test
-          echo "${{secrets.DATABASE_NAME}}" >> .env.test
-    - run: ls -a
-    - run: cat .env.connection
-    - run: cat .env.test
+          echo "${{ secrets.DATABASE_NAME }}" >> .env.test
     - run: npm test
