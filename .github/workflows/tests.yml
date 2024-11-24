@@ -32,6 +32,7 @@ jobs:
           echo "${{secrets.DATABASE_URI}}" >> .env.connection
           touch .env.test
           echo "${{secrets.DATABASE_NAME}}" >> .env.test
+    - run: ls -a
     - run: cat .env.connection
     - run: cat .env.test
     - run: npm test
