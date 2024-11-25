@@ -343,5 +343,66 @@
                 }
             }
         }
+    },
+    "exercises": {
+        "GET /api/exercises": {
+            "description": "Returns an array of all exercises",
+            "exampleRequest": "GET /api/exercises",
+            "exampleResponse": {
+                "exercises": [
+                    {
+                        "_id": "674094cb13a4613f6bc9a198",
+                        "name": "Push-Ups",
+                        "type": "Strength",
+                        "target_muscle_group": "Chest",
+                        "duration_in_seconds": 30,
+                        "description": "A bodyweight exercise to strengthen the chest, shoulders, and triceps.",
+                        "xp": 50
+                    },
+                    {
+                        "_id": "674094cb13a4613f6bc9a199",
+                        "name": "Squats",
+                        "type": "Strength",
+                        "target_muscle_group": "Legs",
+                        "duration_in_seconds": 40,
+                        "description": "A lower body exercise that targets quads, hamstrings, and glutes.",
+                        "xp": 60
+                    },
+                    {
+                        "_id": "674094cb13a4613f6bc9a19a",
+                        "name": "Plank",
+                        "type": "Core",
+                        "target_muscle_group": "Abs",
+                        "duration_in_seconds": 60,
+                        "description": "Hold your body in a straight line while supporting your weight on your forearms and toes.",
+                        "xp": 70
+                    },
+                    {
+                        "_id": "674094cb13a4613f6bc9a19b",
+                        "name": "Jumping Jacks",
+                        "type": "Cardio",
+                        "target_muscle_group": "Full Body",
+                        "duration_in_seconds": 45,
+                        "description": "A cardio exercise to improve endurance and warm up the body.",
+                        "xp": 40
+                    }
+                ]
+            }
+        },
+        "GET /api/exercises/:exercise_id": {
+            "description": "Returns an exercise by its ID",
+            "exampleRequest": "GET /api/exercises/674094cb13a4613f6bc9a19c",
+            "exampleResponse": {
+                "exercise": {
+                    "_id": "674094cb13a4613f6bc9a19c",
+                    "name": "Bicep Curls",
+                    "type": "Strength",
+                    "target_muscle_group": "Arms",
+                    "duration_in_seconds": 50,
+                    "description": "An arm-focused exercise using dumbbells to target the biceps.",
+                    "xp": 65
+                }
+            }                    
+        }
     }
 }
