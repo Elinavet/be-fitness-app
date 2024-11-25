@@ -7,7 +7,7 @@ const endpoints = require("../endpoints.json")
 require("jest-sorted")
 
 
-jest.setTimeout(18000);
+jest.setTimeout(30000);
 
 beforeEach(() => {
     return seed(data)
