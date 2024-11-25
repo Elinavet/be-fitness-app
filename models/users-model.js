@@ -28,7 +28,7 @@ function fetchUserById(userId, queries){
 }
 
 function updateUser(userId, propertiesToUpdate){
-    const validKeys = ["level_increment"]
+    const validKeys = ["level_increment", "image_url"]
     for(const key of Object.keys(propertiesToUpdate)){
         if(!validKeys.includes(key)){
             delete propertiesToUpdate[key]
@@ -68,6 +68,20 @@ function updateUser(userId, propertiesToUpdate){
             newProperties.level = newLevel
             newProperties.workout_log = user.workout_log
         }
+
+        // handle image_url updates
+        if (propertiesToUpdate.image_url !== undefined) {
+            if (typeof propertiesToUpdate.image_url !== "string") {
+                return Promise.reject({ status: 400, message: "Invalid image URL" });
+            }
+            const urlPattern = /^(https?:\/\/[^\s$.?#].[^\s]*)$/;
+            if (!urlPattern.test(propertiesToUpdate.image_url)) {
+                return Promise.reject({ status: 400, message: "Invalid image URL" });
+            }
+            newProperties.image_url = propertiesToUpdate.image_url;
+
+        }
+
 
         return usersDb.findOneAndUpdate(
             {_id: new ObjectId(userId)}, 

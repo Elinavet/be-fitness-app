@@ -139,6 +139,27 @@ describe("/api/users/:user_id", () => {
                 expect(user.workout_log.length).toBe(1)
             })
         })
+        test("200: updates users profile picture", () => {
+            return request(app)
+            .patch("/api/users/648d9f1a7a2d5b1f1e6d1235")
+            .send({level_increment: -1, image_url: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8dGhlJTIwZ3ltfGVufDB8fDB8fHww"})
+            .expect(200)
+            .then((response) => {
+                const {user} = response.body
+                console.log(user)
+                expect(user._id).toBe("648d9f1a7a2d5b1f1e6d1235")
+                expect(typeof user.image_url).toBe("string")
+            })
+        })
+        test("400: responds with Invalid image URL message when given url is not a string", () => {
+            return request(app)
+            .patch("/api/users/648d9f1a7a2d5b1f1e6d1235")
+            .send({level_increment: -1, image_url: true})
+            .expect(400)
+            .then((response) => {
+                expect(response.body.message).toBe("Invalid image URL");
+            })
+        })
         test("200: Ignores any extra keys on object being sent", () => {
             return request(app)
             .patch("/api/users/648d9f1a7a2d5b1f1e6d1235")
