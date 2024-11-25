@@ -18,7 +18,7 @@ const users = [
     age: 34,
     xp: 220,
     level: 3,
-    goals: ["Gain muscle", "Improve stamina"],
+    goals: ["Gain muscle", "Improve stamina", "Build core strength"],
     reminders: [{ reminder_time: new Date("2024-11-21T07:30:00") }],
     workout_log: [
       {level: 1, date_completed: new Date("2024-11-19T07:30:00")},

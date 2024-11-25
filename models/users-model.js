@@ -27,15 +27,45 @@ function fetchUserById(userId, queries){
     })
 }
 
+function addGoal(userId, goalToAdd){
+    return client.connect().then(() => {
+        return usersDb.findOne({_id: new ObjectId(userId)})
+    }).then((user) => {
+        if(!user){
+            return Promise.reject({status: 404, message: "User not found"})
+        }
+        if(user.goals.includes(goalToAdd)){
+            return Promise.reject({status: 400, message: "Goal already exists"})
+        }
+        user.goals.push(goalToAdd)
+        return usersDb.findOneAndUpdate({_id: new ObjectId(userId)}, {$set: {goals: user.goals}}, {returnDocument: "after"})
+    }).then((user) => {
+        return user.goals
+    })
+}
+
+function removeGoal(userId, goalToRemove){
+    return client.connect().then(() => {
+        return usersDb.findOne({_id: new ObjectId(userId)})
+    }).then((user) => {
+        if(!user){
+            return Promise.reject({status: 404, message: "User not found"})
+        }
+        if(!user.goals.includes(goalToRemove)){
+            return Promise.reject({status: 404, message: "Goal not found"})
+        }
+        user.goals.splice(user.goals.indexOf(goalToRemove), 1)
+        return usersDb.findOneAndUpdate({_id: new ObjectId(userId)}, {$set: {goals: user.goals}}, {returnDocument: "after"})
+    })
+}
 
 function updateUser(userId, propertiesToUpdate){
-    const validKeys = ["add_goal", "level_increment", "remove_goal"]
+    const validKeys = ["level_increment"]
     for(const key of Object.keys(propertiesToUpdate)){
         if(!validKeys.includes(key)){
-            delete propertiesToUpdate.key
+            delete propertiesToUpdate[key]
         }
     }
-
     if(Object.values(propertiesToUpdate).length === 0){
         return Promise.reject({status: 400, message: "Bad request"})
     }
@@ -48,32 +78,24 @@ function updateUser(userId, propertiesToUpdate){
         }
 
         const newProperties = {}
-
-        if(propertiesToUpdate.add_goal){
-            if(user.goals.includes(propertiesToUpdate.add_goal)){
-                return Promise.reject({status: 400, message: "Goal already exists"})
+        if(propertiesToUpdate.level_increment !== 1){
+            if(propertiesToUpdate.level_increment !== -1){
+                return Promise.reject({status: 400, message: "Level increment must be 1 or -1"})
             }
-            user.goals.push(propertiesToUpdate.add_goal)
-            newProperties.goals = user.goals
         }
-
-        if(propertiesToUpdate.remove_goal){
-            if(!user.goals.includes(propertiesToUpdate.remove_goal)){
-                return Promise.reject({status: 404, message: "Goal not found"})
-            }
-            user.goals.splice(user.goals.indexOf(propertiesToUpdate.remove_goal), 1)
-            newProperties.goals = user.goals
-        }
-
         const newLevel = user.level + propertiesToUpdate.level_increment
         if(propertiesToUpdate.level_increment){
             if(newLevel < 1){
                 return Promise.reject({status: 400, message: "User's level cannot be decremented any further"})
             }
-            if(!user.workout_log){
-                user.workout_log = [{level: user.level, date_completed: new Date()}]
+            if(propertiesToUpdate.level_increment === 1){
+                if(!user.workout_log){
+                    user.workout_log = [{level: user.level, date_completed: new Date()}]
+                } else {
+                    user.workout_log.push({level: user.level, date_completed: new Date()})
+                }
             } else {
-                user.workout_log.push({level: user.level, date_completed: new Date()})
+                user.workout_log.pop()
             }
             newProperties.level = newLevel
             newProperties.workout_log = user.workout_log
@@ -88,4 +110,4 @@ function updateUser(userId, propertiesToUpdate){
     })
 }
 
-module.exports = { fetchAllUsers, fetchUserById, updateUser }
+module.exports = { fetchAllUsers, fetchUserById, updateUser, addGoal, removeGoal }
