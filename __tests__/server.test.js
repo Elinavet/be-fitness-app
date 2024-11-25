@@ -58,13 +58,53 @@ describe("/api/users", () => {
                 })
             })
         })
-        describe("Queries", () => {
-            test("200: Responds with an array of users sorted by XP in descending order when given a sort_by of xp", () => {
-                return request(app)
-                .get("/api/users?sort_by=xp")
+        test("200: Sorts by XP in descending order by default", () => {
+            return request(app)
+                .get("/api/users")
                 .expect(200)
                 .then((response) => {
                     expect(response.body.users).toBeSortedBy("xp", {descending: true})
+                })
+        })
+        describe("Queries", () => {
+            test("200: Responds with an array of users sorted by level in descending order when given that sort_by query (order defaults to descending)", () => {
+                return request(app)
+                .get("/api/users?sort_by=level")
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.users).toBeSortedBy("level", {descending: true})
+                })
+            })
+            test("200: Sorts by age in descending order when given the corresponding sort_by and order queries", () => {
+                return request(app)
+                .get("/api/users?sort_by=age&order=desc")
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.users).toBeSortedBy("age", {descending: true})
+                })
+            })
+            test("200: Sorts by XP in ascending order when given the corresponding order query (sort_by defaults to xp)", () => {
+                return request(app)
+                .get("/api/users?order=asc")
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.users).toBeSortedBy("xp", {ascending: true})
+                })
+            })
+            test("400: Responds with a bad request message when given an invalid sort_by query", () => {
+                return request(app)
+                .get("/api/users?sort_by=invalid_sort_by")
+                .expect(400)
+                .then((response) => {
+                    expect(response.body.message).toBe("Invalid sort_by")
+                })
+            })
+            test("400: Responds with a bad request message when given an invalid sort_by query", () => {
+                return request(app)
+                .get("/api/users?order=invalid_order")
+                .expect(400)
+                .then((response) => {
+                    expect(response.body.message).toBe("Invalid order")
                 })
             })
         })
