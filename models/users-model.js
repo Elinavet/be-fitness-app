@@ -46,11 +46,16 @@ function updateUser(userId, propertiesToUpdate){
         }
 
         const newProperties = {}
-        if(propertiesToUpdate.level_increment !== 1){
-            if(propertiesToUpdate.level_increment !== -1){
-                return Promise.reject({status: 400, message: "Level increment must be 1 or -1"})
+        
+        //handle level increment
+        if(propertiesToUpdate.level_increment){
+            if(propertiesToUpdate.level_increment !== 1){
+                if(propertiesToUpdate.level_increment !== -1){
+                    return Promise.reject({status: 400, message: "Level increment must be 1 or -1"})
+                }
             }
         }
+
         const newLevel = user.level + propertiesToUpdate.level_increment
         if(propertiesToUpdate.level_increment){
             if(newLevel < 1){
