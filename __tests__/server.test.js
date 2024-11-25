@@ -200,6 +200,32 @@ describe("/api/users/:user_id", () => {
 })
 
 describe("/api/users/:user_id/goals", () => {
+    describe("GET", () => {
+        test("200: Returns an array of all goals for a given user", () => {
+            return request(app)
+            .get("/api/users/648d9f1a7a2d5b1f1e6d1235/goals")
+            .expect(200)
+            .then((response) => {
+                expect(Array.isArray(response.body.goals)).toBe(true)
+            })
+        })
+        test("400: Responds with a bad request message when given an invalid ID", () => {
+            return request(app)
+            .get("/api/users/invalid_id/goals")
+            .expect(400)
+            .then((response) => {
+                expect(response.body.message).toBe("Invalid ID")
+            })
+        })
+        test("404: Responds with a not found message if user does not exist", () => {
+            return request(app)
+            .get("/api/users/648d9f1a7a2d5b1f1e6d1237/goals")
+            .expect(404)
+            .then((response) => {
+                expect(response.body.message).toBe("User not found")
+            })
+        })
+    })
     describe("POST", () => {
         test("200: Adds a goal to the goals array when given a valid goal to add", () => {
             return request(app)
@@ -228,7 +254,7 @@ describe("/api/users/:user_id/goals", () => {
                 expect(response.body.message).toBe("Invalid ID")
             })
         })
-        test("404: Responds with a bad request if goal if user does not exist", () => {
+        test("404: Responds with a not found message if user does not exist", () => {
             return request(app)
             .post("/api/users/648d9f1a7a2d5b1f1e6d1237/goals")
             .send({goal_to_add: "Improve stamina"})

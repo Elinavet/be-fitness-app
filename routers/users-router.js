@@ -1,5 +1,6 @@
 const express = require("express")
-const { getAllUsers, getUserById, patchUser, postGoal, deleteGoal } = require("../controllers/users-controller.js")
+const { getAllUsers, getUserById, patchUser } = require("../controllers/users-controller.js")
+const { getGoals, postGoal, deleteGoal } = require("../controllers/goals-controller.js")
 const router = express.Router()
 
 router.route("/")
@@ -10,6 +11,7 @@ router.route("/:user_id")
 .patch(patchUser)
 
 router.route("/:user_id/goals")
+.get(getGoals)
 .post(postGoal)
 .delete(deleteGoal)
 
