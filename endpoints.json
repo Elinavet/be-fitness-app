@@ -123,11 +123,9 @@
             }
         },
         "PATCH /api/users/:user_id": {
-            "description": "Adds a new goal to user goals array",
+            "description": "Increments the level of a user by 1 or -1, adding or removing from workout_log",
             "exampleRequest": "PATCH /api/users/673f41e3f6e7ff753e12833e",
             "exampleRequestBody": {
-                "remove_goal": "Build core strength",
-                "add_goal": "Goal A",
                 "level_increment": 1
             },
             "userBeforePatch": {
@@ -141,7 +139,7 @@
                 "level": 1,
                 "goals": [
                     "Lose weight",
-                    "Goal A"
+                    "Build core strength"
                 ],
                 "reminders": [
                     {
@@ -163,8 +161,7 @@
                     "level": 2,
                     "goals": [
                         "Lose weight",
-                        "Build core strength",
-                        "Goal A"
+                        "Build core strength"
                     ],
                     "reminders": [
                         {
@@ -403,6 +400,53 @@
                     "xp": 65
                 }
             }                    
+        }
+    },
+    "goals": {
+        "GET /api/users/:user_id/goals": {
+            "description": "Returns an array of all goals for a specific user",
+            "exampleRequest": "GET /api/users/648d9f1a7a2d5b1f1e6d1235/goals",
+            "exampleResponse": {
+                "goals": [
+                    "Lose weight",
+                    "Build core strength"
+                ]
+            }
+        },
+        "POST /api/users/:user_id/goals": {
+            "description": "Adds a goal to a user's goals array",
+            "exampleRequest": "POST /api/users/648d9f1a7a2d5b1f1e6d1235/goals",
+            "exampleRequestBody": {
+                "goal_to_add": "Goal A"
+            },
+            "goalsBefore": [
+                "Lose weight",
+                "Build core strength"
+            ],
+            "exampleResponse": {
+                "goals": [
+                    "Lose weight",
+                    "Build core strength",
+                    "Goal A"
+                ]
+            }
+        },
+        "DELETE /api/users/:user_id/goals": {
+            "description": "Removes a goal from a user's goals array",
+            "exampleRequest": "DELETE /api/users/648d9f1a7a2d5b1f1e6d1235/goals",
+            "exampleRequestBody": {
+                "goal_to_remove": "Goal A"
+            },
+            "goalsBefore": [
+                "Lose weight",
+                "Build core strength",
+                "Goal A"
+            ],
+            "goalsAfter": [
+                "Lose weight",
+                "Build core strength"
+            ],
+            "response": "Only responds with status 204 - does not return anything"
         }
     }
 }
