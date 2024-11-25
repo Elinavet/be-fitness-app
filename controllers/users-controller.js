@@ -1,4 +1,4 @@
-const { fetchAllUsers, fetchUserById, updateUser } = require("../models/users-model")
+const { fetchAllUsers, fetchUserById, updateUser, addGoal, removeGoal } = require("../models/users-model")
 
 function getAllUsers(request, response, next){
     fetchAllUsers(request.query).then((users) => {
