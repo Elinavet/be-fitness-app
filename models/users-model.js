@@ -3,13 +3,22 @@ const { ObjectId } = require("mongodb")
 const usersDb = db.collection("users")
 
 function fetchAllUsers(queries){
-    /*const validQueries = ["sort_by", "order"]
-    if(!Object.keys(queries).includes(validQueries)){
-        return Promise.reject({status: 400, message: "One or more queries are invalid"})
-    }*/
-    const querySettings = {}
+    const sort_by = queries.sort_by ? queries.sort_by : "xp"
+    const order = queries.order ? (queries.order.toLowerCase() === "asc" ? 1 : (queries.order.toLowerCase() === "desc" ? -1 : undefined)) : -1
+    const validSortBy = ["xp", "age", "level"]
+
+    if(!validSortBy.includes(sort_by)){
+        return Promise.reject({status: 400, message: "Invalid sort_by"})
+    }
+
+    if(order !== 1){
+        if(order !== -1){
+            return Promise.reject({status:400, message: "Invalid order"})
+        }
+    }
+    
     return client.connect().then(() => {
-        return usersDb.find({}).sort({xp: -1}).toArray()
+        return usersDb.find({}).sort({[sort_by]: order}).toArray()
     }).then((users) => {
         return users
     })
