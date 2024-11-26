@@ -401,6 +401,116 @@ describe("/api/users/:user_id/goals", () => {
     })
 })
 
+describe.skip("/api/users/:user_id/reminders", () => {
+    describe("GET", () => {
+        test("200: Returns an array of all reminders for a given user", () => {
+            return request(app)
+            .get("/api/users/648d9f1a7a2d5b1f1e6d1235/reminders")
+            .expect(200)
+            .then((response) => {
+                expect(Array.isArray(response.body.reminders)).toBe(true)
+            })
+        })
+        test("400: Responds with a bad request message when given an invalid ID", () => {
+            return request(app)
+            .get("/api/users/invalid_id/reminders")
+            .expect(400)
+            .then((response) => {
+                expect(response.body.message).toBe("Invalid ID")
+            })
+        })
+        test("404: Responds with a not found message if user does not exist", () => {
+            return request(app)
+            .get("/api/users/648d9f1a7a2d5b1f1e6d1237/reminders")
+            .expect(404)
+            .then((response) => {
+                expect(response.body.message).toBe("User not found")
+            })
+        })
+    })
+    describe("POST", () => {
+        test("200: Adds a reminder to the reminders array when given a valid reminder to add", () => {
+            return request(app)
+            .post("/api/users/648d9f1a7a2d5b1f1e6d1235/reminders")
+            .send({reminder_to_add: {"message": "Complete level 3 today!", "reminder_time": "2024-11-21T07:30:00.000Z"}})
+            .expect(201)
+            .then((response) => {
+                expect(response.body.reminders).toEqual(
+                    expect.arrayContaining([
+                        expect.objectContaining({ 
+                            message: "Complete level 3 today!", 
+                            reminder_time: "2024-11-21T07:30:00.000Z"
+                })]))
+            })
+        })
+        test("400: Responds with a bad request if reminder is already found in reminders array", () => {
+            return request(app)
+            .post("/api/users/648d9f1a7a2d5b1f1e6d1235/reminders")
+            .send({reminder_to_add: { message: "Complete level 3 today!", reminder_time: "2024-11-21T07:30:00.000Z" }})
+            .expect(400)
+            .then((response) => {
+                expect(response.body.message).toBe("Reminder already exists")
+            })
+        })
+        test("400: Responds with a bad request message when given an invalid ID", () => {
+            return request(app)
+            .post("/api/users/invalid_id/reminders")
+            .send({reminder_to_add: {"message": "Complete level 3 today!", "reminder_time": "2024-11-21T07:30:00.000Z"}})
+            .expect(400)
+            .then((response) => {
+                expect(response.body.message).toBe("Invalid ID")
+            })
+        })
+        test("404: Responds with a not found message if user does not exist", () => {
+            return request(app)
+            .post("/api/users/648d9f1a7a2d5b1f1e6d1237/reminders")
+            .send({reminder_to_add: {"message": "Complete level 3 today!", "reminder_time": "2024-11-21T07:30:00.000Z"}})
+            .expect(404)
+            .then((response) => {
+                expect(response.body.message).toBe("User not found")
+            })
+        })
+    })
+    describe("DELETE", () => {
+        test("204: Removes reminder from the reminders array when given a valid reminder to remove", () => {
+            return request(app)
+            .delete("/api/users/648d9f1a7a2d5b1f1e6d1235/reminders")
+            .send({reminder_to_remove: {
+                reminder_time: "2024-11-21T07:30:00.000Z",
+                message: 'Complete level 3 today!'
+              }})
+            .expect(204)
+        })
+        test("400: Responds with a bad request if reminder to remove does not already exist", () => {
+            return request(app)
+            .delete("/api/users/648d9f1a7a2d5b1f1e6d1235/reminders")
+            .send({reminder_to_remove: {"message": "Complete level 3 today!", "reminder_time": "2024-11-21T07:30:00.000Z"}})
+            .expect(404)
+            .then((response) => {
+                expect(response.body.message).toBe("Reminder not found")
+            })
+        })
+        test("400: Responds with a bad request message when given an invalid ID", () => {
+            return request(app)
+            .delete("/api/users/invalid_id/reminders")
+            .send({reminder_to_remove: {"message": "Complete level 3 today!", "reminder_time": "2024-11-21T07:30:00.000Z"}})
+            .expect(400)
+            .then((response) => {
+                expect(response.body.message).toBe("Invalid ID")
+            })
+        })
+        test("404: Responds with a bad request if reminder if user does not exist", () => {
+            return request(app)
+            .delete("/api/users/648d9f1a7a2d5b1f1e6d1237/reminders")
+            .send({reminder_to_remove: {"message": "Complete level 3 today!", "reminder_time": "2024-11-21T07:30:00.000Z"}})
+            .expect(404)
+            .then((response) => {
+                expect(response.body.message).toBe("User not found")
+            })
+        })
+    })
+})
+
 describe("/api/exercises", () => {
     describe("GET", () => {
         test("200: Returns an array of all exercises", () => {
