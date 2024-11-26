@@ -242,6 +242,26 @@ describe("/api/users/:user_id", () => {
                     expect(user.xp).toBe(0);
                 });
         });           
+        test("200: Resets level and removes workout_log when given a reset_level property", () => {
+            return request(app)
+                .patch("/api/users/648d9f1a7a2d5b1f1e6d1235")
+                .send({reset_level: true})
+                .expect(200)
+                .then((response) => {
+                    const { user } = response.body;
+                    expect(user.level).toBe(1);
+                    expect(user).not.toHaveProperty("workout_log")
+                });
+        });
+        test("200: Resets XP when given a reset_xp property", () => {
+            return request(app)
+            .patch("/api/users/648d9f1a7a2d5b1f1e6d1235")
+            .send({reset_xp: true})
+            .expect(200)
+            .then((response) => {
+                expect(response.body.user.xp).toBe(0)
+            })
+        })
         test("400: Responds with invalid image URL message when given URL is not a string", () => {
             return request(app)
             .patch("/api/users/648d9f1a7a2d5b1f1e6d1235")

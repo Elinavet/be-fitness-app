@@ -55,11 +55,12 @@ function updateUser(userId, propertiesToUpdate){
         }
 
         const newProperties = {}
+        const propertiesToRemove = {}
 
         // Handle level reset
         if (propertiesToUpdate.reset_level === true) {
             newProperties.level = 1;
-            newProperties.workout_log = [];
+            propertiesToRemove.workout_log = ""
         } else if (propertiesToUpdate.level_increment) {
             if (propertiesToUpdate.level_increment !== 1 && propertiesToUpdate.level_increment !== -1) {
                 return Promise.reject({ status: 400, message: "Level increment must be 1 or -1" });
@@ -121,7 +122,7 @@ function updateUser(userId, propertiesToUpdate){
 
         return usersDb.findOneAndUpdate(
             {_id: new ObjectId(userId)}, 
-            {$set: newProperties}, 
+            {$set: newProperties, $unset: propertiesToRemove}, 
             {returnDocument: "after"})
     }).then((user) => {
         return user
