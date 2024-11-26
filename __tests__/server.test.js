@@ -507,9 +507,10 @@ describe("/api/workouts", () => {
                 const { workouts } = response.body;
                 workouts.forEach((workout) => {
                     expect(typeof workout.level).toBe("number");
+                    expect(Array.isArray(workout.exercises)).toBe(true);
+                    expect(typeof workout.total_duration).toBe("number")
+                    expect(typeof workout.total_xp).toBe("number")
                 })
-                expect(typeof workout.total_duration).toBe("number")
-                expect(typeof workout.total_xp).toBe("number")
             });
         });
         test('200: All workouts sorted by level by default', () => {
