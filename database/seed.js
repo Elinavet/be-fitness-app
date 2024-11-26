@@ -1,4 +1,4 @@
-const getTotalDurationOfWorkout = require("../utils/get-total-duration-of-workout.js")
+const getTotalFromArray = require("../utils/get-total-from-array.js")
 const {db, client} = require("./connection.js")
 const {ObjectId} = require("mongodb")
 
@@ -40,10 +40,13 @@ function seed({users, exercises, workouts}){
         return Promise.all([Promise.all(promises), workouts])
     }).then(([exercisesForWorkouts, workouts]) => {
         const promises = workouts.map((workout, index) => {
+            const allDurations = exercisesForWorkouts[index].map((exercise) => {return exercise.duration_in_seconds})
+            const allXpCounts = exercisesForWorkouts[index].map((exercise) => {return exercise.xp})
             return db.collection("workouts").findOneAndUpdate({_id: workout._id}, {
                 $set: {
                     exercises: exercisesForWorkouts[index],
-                    total_duration: getTotalDurationOfWorkout(exercisesForWorkouts[index])
+                    total_duration: getTotalFromArray(allDurations),
+                    total_xp: getTotalFromArray(allXpCounts)
                 },
                 $unset: {
                     exercise_names: ""

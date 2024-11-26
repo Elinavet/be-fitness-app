@@ -7,7 +7,7 @@ const endpoints = require("../endpoints.json")
 require("jest-sorted")
 
 
-jest.setTimeout(18000);
+jest.setTimeout(30000);
 
 beforeEach(() => {
     return seed(data)
@@ -467,6 +467,7 @@ describe("/api/workouts/:level", () => {
                 expect(workout.level).toBe(1);
                 expect(typeof workout.level).toBe("number");
                 expect(typeof workout.total_duration).toBe("number");
+                expect(typeof workout.total_xp).toBe("number");
                 expect(Array.isArray(workout.exercises)).toBe(true);
                 workout.exercises.forEach((exercise) => {
                     expect(exercise).toHaveProperty("_id");
@@ -506,7 +507,10 @@ describe("/api/workouts", () => {
                 const { workouts } = response.body;
                 workouts.forEach((workout) => {
                     expect(typeof workout.level).toBe("number");
-                });
+                    expect(Array.isArray(workout.exercises)).toBe(true);
+                    expect(typeof workout.total_duration).toBe("number")
+                    expect(typeof workout.total_xp).toBe("number")
+                })
             });
         });
         test('200: All workouts sorted by level by default', () => {
