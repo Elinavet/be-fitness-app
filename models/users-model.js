@@ -37,7 +37,7 @@ function fetchUserById(userId, queries){
 }
 
 function updateUser(userId, propertiesToUpdate){
-    const validKeys = ["level_increment", "image_url", "xp_increment"]
+    const validKeys = ["level_increment", "image_url", "xp_increment", "reset_level", "reset_xp"]
     for(const key of Object.keys(propertiesToUpdate)){
         if(!validKeys.includes(key)){
             delete propertiesToUpdate[key]
@@ -55,32 +55,42 @@ function updateUser(userId, propertiesToUpdate){
         }
 
         const newProperties = {}
-        
-        //handle level increment
-        if(propertiesToUpdate.level_increment){
-            if(propertiesToUpdate.level_increment !== 1){
-                if(propertiesToUpdate.level_increment !== -1){
-                    return Promise.reject({status: 400, message: "Level increment must be 1 or -1"})
-                }
-            }
-        }
+        const propertiesToRemove = {}
 
-        const newLevel = user.level + propertiesToUpdate.level_increment
-        if(propertiesToUpdate.level_increment){
-            if(newLevel < 1){
-                return Promise.reject({status: 400, message: "User's level cannot be decremented any further"})
+        // Handle level reset
+        if (propertiesToUpdate.reset_level === true) {
+            newProperties.level = 1;
+            propertiesToRemove.workout_log = ""
+        } else if (propertiesToUpdate.level_increment) {
+            if (propertiesToUpdate.level_increment !== 1 && propertiesToUpdate.level_increment !== -1) {
+                return Promise.reject({ status: 400, message: "Level increment must be 1 or -1" });
             }
-            if(propertiesToUpdate.level_increment === 1){
-                if(!user.workout_log){
-                    user.workout_log = [{level: user.level, date_completed: new Date()}]
+            const newLevel = user.level + propertiesToUpdate.level_increment;
+            if (newLevel < 1) {
+                return Promise.reject({ status: 400, message: "User's level cannot be decremented any further" });
+            }
+            if (propertiesToUpdate.level_increment === 1) {
+                if (!user.workout_log) {
+                    user.workout_log = [{ level: user.level, date_completed: new Date() }];
                 } else {
-                    user.workout_log.push({level: user.level, date_completed: new Date()})
+                    user.workout_log.push({ level: user.level, date_completed: new Date() });
                 }
             } else {
-                user.workout_log.pop()
+                user.workout_log.pop();
             }
-            newProperties.level = newLevel
-            newProperties.workout_log = user.workout_log
+            newProperties.level = newLevel;
+            newProperties.workout_log = user.workout_log;
+        }
+
+        // Handle XP reset
+        if (propertiesToUpdate.reset_xp === true) {
+            newProperties.xp = 0;
+        } else if (propertiesToUpdate.xp_increment) {
+            if (typeof propertiesToUpdate.xp_increment !== "number") {
+                return Promise.reject({ status: 400, message: "XP increment must be a number" });
+            }
+            const newXP = user.xp + propertiesToUpdate.xp_increment;
+            newProperties.xp = Math.max(0, newXP);
         }
 
         // handle image_url updates
@@ -112,7 +122,7 @@ function updateUser(userId, propertiesToUpdate){
 
         return usersDb.findOneAndUpdate(
             {_id: new ObjectId(userId)}, 
-            {$set: newProperties}, 
+            {$set: newProperties, $unset: propertiesToRemove}, 
             {returnDocument: "after"})
     }).then((user) => {
         return user
