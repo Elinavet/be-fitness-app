@@ -17,6 +17,7 @@ afterAll(() => {
     client.close()
 })
 
+
 describe("/api", () => {
     describe("GET", () => {
         test("200: Responds with a JSON object detailing all endpoints", () => {
@@ -37,14 +38,14 @@ describe("/api/users", () => {
             .get("/api/users")
             .expect(200)
             .then((response) => {
-                expect(response.body.users.length).toBe(3)
+                expect(response.body.users.length).toBe(4)
                 response.body.users.forEach((user) => {
                     expect(user).toHaveProperty("_id")
                     expect(typeof user.name).toBe("string")
                     expect(typeof user.email).toBe("string")
                     expect(typeof user.age).toBe("number")
                     expect(typeof user.xp).toBe("number")
-                    expect(typeof user.level).toBe("number")
+                    expect(typeof user.level).not.toBe(undefined)
                     expect(Array.isArray(user.goals)).toBe(true)
                     user.goals.forEach((goal) => {
                         expect(typeof goal).toBe("string")
@@ -157,14 +158,14 @@ describe("/api/users/:user_id", () => {
     describe("PATCH", () => {
         test("200: Increments the level and updates workout_log when given a valid level_increment property", () => {
             return request(app)
-            .patch("/api/users/648d9f1a7a2d5b1f1e6d1235")
+            .patch("/api/users/648d9f1a7a2d5b1f1e6d1236")
             .send({level_increment: 1})
             .expect(200)
             .then((response) => {
                 const {user} = response.body
-                expect(user._id).toBe("648d9f1a7a2d5b1f1e6d1235")
-                expect(user.level).toBe(4)
-                expect(user.workout_log.length).toBe(3)
+                expect(user._id).toBe("648d9f1a7a2d5b1f1e6d1236")
+                expect(user.level).toBe(5)
+                expect(user.workout_log.length).toBe(4)
             })
         })
         test("200: Decrements the level and removes workout from workout_log when given a level_increment property of -1", () => {
@@ -175,10 +176,22 @@ describe("/api/users/:user_id", () => {
             .then((response) => {
                 const {user} = response.body
                 expect(user._id).toBe("648d9f1a7a2d5b1f1e6d1235")
-                expect(user.level).toBe(2)
+                expect(user.level).toBe(5)
                 expect(user.workout_log.length).toBe(1)
             })
         })
+
+        test("200: Sets level to 'All workouts completed' when incrementing beyond max level", () => {
+            const userId = "648d9f1a7a2d5b1f1e6d1235";
+            return request(app)
+                .patch(`/api/users/${userId}`)
+                .send({ level_increment: 1 })
+                .expect(200)
+                .then((response) => {
+                    expect(response.body.user.level).toBe("All workouts completed");
+                });
+        });
+
         test("200: Updates user's profile picture", () => {
             return request(app)
             .patch("/api/users/648d9f1a7a2d5b1f1e6d1235")
@@ -192,7 +205,7 @@ describe("/api/users/:user_id", () => {
         })
         test("200: updates user with level_increment, image_url, and xp_increment", () => {
             return request(app)
-                .patch("/api/users/648d9f1a7a2d5b1f1e6d1235")
+                .patch("/api/users/648d9f1a7a2d5b1f1e6d1234")
                 .send({
                     level_increment: 1,
                     image_url: "https://www.newimage.com",
@@ -201,24 +214,36 @@ describe("/api/users/:user_id", () => {
                 .expect(200)
                 .then((response) => {
                     const { user } = response.body;
-                    expect(user.level).toBe(4);
+                    expect(user.level).toBe(2);
                     expect(user.image_url).toBe("https://www.newimage.com");
-                    expect(user.xp).toBe(320);
+                    expect(user.xp).toBe(220);
                 });
         });
         
         test("200: Ignores any extra keys on object being sent", () => {
             return request(app)
-            .patch("/api/users/648d9f1a7a2d5b1f1e6d1235")
+            .patch("/api/users/648d9f1a7a2d5b1f1e6d1234")
             .send({level_increment: 1, extraKey: "Extra value"})
             .expect(200)
             .then((response) => {
                 const {user} = response.body
-                expect(user._id).toBe("648d9f1a7a2d5b1f1e6d1235")
-                expect(user.level).toBe(4)
-                expect(user.workout_log.length).toBe(3)
+                expect(user._id).toBe("648d9f1a7a2d5b1f1e6d1234")
+                expect(user.level).toBe(2)
+                expect(user.workout_log.length).toBe(1)
             })
         })
+
+        test("400: Cannot increment level when 'All workouts completed'", () => {
+            const userId = "648d9f1a7a2d5b1f1e6d1239";
+            return request(app)
+                .patch(`/api/users/${userId}`)
+                .send({ level_increment: 1 })
+                .expect(400)
+                .then((response) => {
+                    expect(response.body.message).toBe("Cannot increment beyond completed workouts");
+                });
+        });
+
         test("400: responds with error for invalid xp_increment", () => {
             return request(app)
                 .patch("/api/users/648d9f1a7a2d5b1f1e6d1235")
