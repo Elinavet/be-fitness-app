@@ -1,6 +1,7 @@
 const {client, db} = require("../database/connection.js")
 const { ObjectId } = require("mongodb")
 const usersDb = db.collection("users")
+const workoutsDb = db.collection("workouts")
 
 function fetchAllUsers(queries){
     const sort_by = queries.sort_by ? queries.sort_by : "xp"
@@ -57,76 +58,123 @@ function updateUser(userId, propertiesToUpdate){
         const newProperties = {}
         const propertiesToRemove = {}
 
-        // Handle level reset
-        if (propertiesToUpdate.reset_level === true) {
-            newProperties.level = 1;
-            propertiesToRemove.workout_log = ""
-        } else if (propertiesToUpdate.level_increment) {
-            if (propertiesToUpdate.level_increment !== 1 && propertiesToUpdate.level_increment !== -1) {
-                return Promise.reject({ status: 400, message: "Level increment must be 1 or -1" });
-            }
-            const newLevel = user.level + propertiesToUpdate.level_increment;
-            if (newLevel < 1) {
-                return Promise.reject({ status: 400, message: "User's level cannot be decremented any further" });
-            }
-            if (propertiesToUpdate.level_increment === 1) {
-                if (!user.workout_log) {
-                    user.workout_log = [{ level: user.level, date_completed: new Date() }];
-                } else {
-                    user.workout_log.push({ level: user.level, date_completed: new Date() });
-                }
-            } else {
-                user.workout_log.pop();
-            }
-            newProperties.level = newLevel;
-            newProperties.workout_log = user.workout_log;
-        }
-
-        // Handle XP reset
-        if (propertiesToUpdate.reset_xp === true) {
-            newProperties.xp = 0;
-        } else if (propertiesToUpdate.xp_increment) {
-            if (typeof propertiesToUpdate.xp_increment !== "number") {
-                return Promise.reject({ status: 400, message: "XP increment must be a number" });
-            }
-            const newXP = user.xp + propertiesToUpdate.xp_increment;
-            newProperties.xp = Math.max(0, newXP);
-        }
-
-        // handle image_url updates
-        if(propertiesToUpdate.image_url){
-        if (propertiesToUpdate.image_url !== undefined) {
-            if (typeof propertiesToUpdate.image_url !== "string") {
-                return Promise.reject({ status: 400, message: "Invalid image URL" });
-            }
-            const urlPattern = /^(https?:\/\/[^\s$.?#].[^\s]*)$/;
-            if (!urlPattern.test(propertiesToUpdate.image_url)) {
-                return Promise.reject({ status: 400, message: "Invalid image URL" });
-            }
-            newProperties.image_url = propertiesToUpdate.image_url;
-        }
-        }
-
-        // Handle `xp_increment`
         
-        if (propertiesToUpdate.xp_increment) {
-        if (propertiesToUpdate.xp_increment !== undefined) {
-            if (typeof propertiesToUpdate.xp_increment !== "number") {
-                return Promise.reject({ status: 400, message: "XP increment must be a number" });
+        return workoutsDb.find().toArray().then((workouts) => {
+            const maxLevel = workouts.length;
+            
+            // Handle level_increment
+            if (propertiesToUpdate.level_increment) {
+                const increment = propertiesToUpdate.level_increment;
+
+                if (increment !== 1 && increment !== -1) {
+                    return Promise.reject({
+                        status: 400,
+                        message: "Level increment must be 1 or -1",
+                    });
+                }
+
+                if (user.level === 'All workouts completed') {
+                    if (increment === -1) {
+                        newProperties.level = maxLevel;
+                    } else {
+                        return Promise.reject({
+                            status: 400,
+                            message: "Cannot increment beyond completed workouts",
+                        });
+                    }
+                } else {
+                    const newLevel = user.level + increment;
+
+                    if (newLevel >= maxLevel) {
+                        newProperties.level = "All workouts completed";
+                    } else if (newLevel < 1) {
+                        return Promise.reject({
+                            status: 400,
+                            message: "User's level cannot be decremented any further",
+                        });
+                    } else {
+                        newProperties.level = newLevel;
+                    }
+
+                    // Update workout_log
+                    if (increment === 1) {
+                        if (!user.workout_log) {
+                            user.workout_log = [
+                                { level: user.level, date_completed: new Date() },
+                            ];
+                        } else {
+                            user.workout_log.push({
+                                level: user.level,
+                                date_completed: new Date(),
+                            });
+                        }
+                    } else if (increment === -1 && user.workout_log) {
+                        user.workout_log.pop();
+                    }
+                    newProperties.workout_log = user.workout_log;
+                }
             }
-            const newXP = user.xp + propertiesToUpdate.xp_increment;
-            newProperties.xp = Math.max(0, newXP);
-        }
-        }
+            // Handle reset_level
+            if (propertiesToUpdate.reset_level === true) {
+                newProperties.level = 1;
+                propertiesToRemove.workout_log = "";
+            }
+
+            // Handle reset_xp
+            if (propertiesToUpdate.reset_xp === true) {
+                newProperties.xp = 0;
+            }
 
 
-        return usersDb.findOneAndUpdate(
-            {_id: new ObjectId(userId)}, 
-            {$set: newProperties, $unset: propertiesToRemove}, 
-            {returnDocument: "after"})
-    }).then((user) => {
-        return user
-    })
+            // Handle xp_increment
+            if (propertiesToUpdate.xp_increment !== undefined) {
+                const increment = propertiesToUpdate.xp_increment;
+
+                if (typeof increment !== "number") {
+                    return Promise.reject({
+                        status: 400,
+                        message: "XP increment must be a number",
+                    });
+                }
+
+                const newXP = user.xp + increment;
+                newProperties.xp = Math.max(0, newXP);
+            }
+
+            // Handle image_url
+            if (propertiesToUpdate.image_url) {
+                const imageUrl = propertiesToUpdate.image_url;
+
+                if (typeof imageUrl !== "string") {
+                    return Promise.reject({
+                        status: 400,
+                        message: "Invalid image URL",
+                    });
+                }
+
+                const urlPattern = /^(https?:\/\/[^\s$.?#].[^\s]*)$/;
+                if (!urlPattern.test(imageUrl)) {
+                    return Promise.reject({
+                        status: 400,
+                        message: "Invalid image URL",
+                    });
+                }
+
+                newProperties.image_url = imageUrl;
+            }
+
+            return usersDb.findOneAndUpdate(
+                { _id: new ObjectId(userId) },
+                { $set: newProperties, $unset: propertiesToRemove },
+                { returnDocument: "after" }
+            );
+        });
+    }).then((updatedUser) => {
+        if (!updatedUser) {
+            return Promise.reject({ status: 404, message: "User not found after update" });
+        }
+        return updatedUser;
+    });
 }
 
 module.exports = { fetchAllUsers, fetchUserById, updateUser }
