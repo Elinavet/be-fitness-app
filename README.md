@@ -6,7 +6,7 @@ This is the back-end for a Fitness App project created by Alex, Robert, Uran, an
 
 ## Cloning
 
-To clone the project, set your terminal to your chosen directory, then run `git clone https://github.com/AlexMan123456/be-fitness-app`, then run `cd be-fitness-app` to navigate into the repository with your terminal.
+To clone the project, set your terminal to your chosen directory, then run `git clone https://github.com/Elinavet/be-fitness-app.git`, then run `cd be-fitness-app` to navigate into the repository with your terminal.
 
 ## Installing Dependencies
 
@@ -64,12 +64,7 @@ You will then need to create three more files: .env.development, .env.production
 
 ## Link to front-end repo
 
-https://github.com/urandias/fitness-app
+https://github.com/Elinavet/fitness-app.git
 
-## Link to hosted back-end
 
-https://northcoders.slack.com/archives/C080P9HVB5X/p1732203887134689
 
-## Link to hosted front-end
-
-Coming soon!
